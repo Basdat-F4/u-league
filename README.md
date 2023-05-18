@@ -23,15 +23,17 @@ Aplikasi ini dibuat menggunakan Django 4.2 yang support Python 3.8, 3.9, 3.10, d
 3. Install dependencies project dengan menjalankan perintah berikut. Perintah ini akan menginstall django dan dependency lainnya.
 
     ```
-    pip install -r requrements.txt
+    pip install -r requirements.txt
     ```
 
+4. Tambahkan file `.env` di base directory. Isi db url. Contoh di file .env.example
 
 4. Jalankan aplikasi dengan mengetik perintah berikut di terminal.
 
     ```
     python manage.py runserver
     ```
+
 
 # Developing
 Berikut adalah notes dalam developing.
