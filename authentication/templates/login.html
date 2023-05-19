@@ -60,7 +60,11 @@
 
 {% block content %}
 <div class = "login">
-    <form method="" action="">   
+    <form method="POST" action="">   
+        {% if gagal %}
+            <p class="text-danger"> Username dan password tidak sesuai! </p> 
+        {% endif %}
+
         <div class="container" style="width: 400px;">
           <H1 style="display:block; text-align:center; padding-top: 48px; padding-bottom: 24px;">FORM LOGIN</H1>
           <table>
@@ -77,4 +81,5 @@
       </div>
     </form>
 </div>
+
 {% endblock content %}
