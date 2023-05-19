@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Welcome to U-League</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          display: flex;
+          margin: 0 auto;
+          text-align: center;
+          justify-content: center;
+        }
+        .field_selection {
+          width:100%;
+          padding: 12px 24px;
+          margin: 8px 0;
+          box-sizing: border-box;
+          border-radius: 10px;
+          border: 3px solid rgb(0, 0, 0);
+          background-color: white;
+          filter: drop-shadow(4px 2px 2px rgba(0, 0, 0, 0.098));
+        }
+        p {
+            text-align: center;
+            font-family: sans-serif;
+        }
+        a:link {
+          color:rgb(0, 0, 0);
+        }
+        a:visited {
+          color:rgb(0, 0, 0);
+        } 
+        ul {
+            font-family: sans-serif;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding-bottom: 50px;
+            border-radius: 20px;
+            display: block;
+            margin: 0 auto;
+            margin-top: 125px;
+        }
+        body {
+          background-image: linear-gradient(-45deg, rgb(2, 4, 2), rgb(92, 15, 15));
+          background-position: center center;
+          margin: 0;
+          padding: 0;
+          min-height: 100vh;
+          background-repeat: no-repeat;
+        }
+        .redirect_link:link, .redirect_link:visited {
+          color:rgb(0, 0, 0);
+          font-weight: bold;
+        }
+      </style>
+{% endblock meta %}
+
+{% block content %}
+<div class = "login">
+    <form method="" action="">   
+        <div class="container" style="width: 400px;">
+          <H1 style="display:block; text-align:center; padding-top: 48px; padding-bottom: 24px;">FORM LOGIN</H1>
+          <table>
+              <tr>
+                  <td><input type="text" name="username" placeholder="Username" class="form-control field_selection"></td>
+              </tr> 
+              <tr>
+                  <td style="padding-bottom:20px"><input type="password" name="password" placeholder="Password" class="form-control field_selection"></td>
+              </tr>
+              <tr>
+                  <td ><input class="btn btn-primary button_select" style="background-color: rgb(117, 11, 11); border: 0px; padding: 10px 30px; font-size: 16px; border-radius: 50px; color: rgb(255, 255, 255); filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));" type="submit" value="Login"></td>
+              </tr>
+          </table>
+      </div>
+    </form>
+</div>
+{% endblock content %}
