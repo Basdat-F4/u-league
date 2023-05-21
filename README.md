@@ -10,7 +10,7 @@ Aplikasi ini dibuat menggunakan Django 4.2 yang support Python 3.8, 3.9, 3.10, d
     Di Windows (Powershell)
 
     ```
-    basdat-tk-env\bin\activate.ps1
+    basdat-tk-env\Scripts\activate
     ```
 
     Di Mac.
