@@ -1,4 +1,4 @@
-{% extends 'penontonBase.html' %}
+{% extends 'manajerBase.html' %}
 {% load static %}
 
 {% block meta %}
@@ -56,32 +56,53 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="container" style="width: 400px;">
+<div class="container" style="width: 1000px;">
     <H1 style="display:block; text-align:center; padding-top: 48px; padding-bottom: 24px; font-weight: bold;">List Pertandingan</H1>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Tim 1</th>
-            <th scope="col">Tim 2</th>
+            <th scope="col">Rapat Tim</th>
+            <th scope="col">Nama Panitia</th>
+            <th scope="col">Stadium</th>
+            <th scope="col">Tanggal dan Waktu</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
     <tbody>
-        {%for game in list_pertandingan%}
+        {%for rapat in list_rapat%}
         <tr>
-            <td>{{game.tim_a}}</td>
-            <td>{{game.tim_b}}</td>
-            <td>
-                <form METHOD="POST">     
-                    <input hidden id="time" value={{game.id_pertandingan}} type="text" name="pertandingan"></input>  
-                    <button type="submit"  class="btn btn-primary" style="background-color: rgb(115, 17, 17); border: 0px; padding: 10px 40px; font-size: 16px; border-radius: 30px; color: white; filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));">Pilih</button>
-                </form>
-            </td>
+            <td>{{rapat.tim_a}} vs {{rapat.tim_b}}</td>
+            <td>{{rapat.panitia}}</td>
+            <td>{{rapat.stadium}}</td>
+            <td>{{rapat.display}}</td>
+            <td>    <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=#mod{{forloop.counter}}>
+                    Lihat Laporan Rapat
+                </button></td>
         </tr>
     </tbody>
+        
+  <!-- Modal -->
+  <div class="modal fade " id=mod{{forloop.counter}} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Isi Rapat</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{rapat.isi}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
     {%endfor%}
       </table>
     </div>
-</div>
-
+  
 {% endblock content %}

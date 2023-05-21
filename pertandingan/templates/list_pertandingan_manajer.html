@@ -1,4 +1,4 @@
-{% extends 'penontonBase.html' %}
+{% extends 'manajerBase.html' %}
 {% load static %}
 
 {% block meta %}
@@ -56,27 +56,22 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="container" style="width: 400px;">
+<div class="container" style="width: 1000px;">
     <H1 style="display:block; text-align:center; padding-top: 48px; padding-bottom: 24px; font-weight: bold;">List Pertandingan</H1>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Tim 1</th>
-            <th scope="col">Tim 2</th>
-            <th scope="col">Action</th>
+            <th scope="col">Tim Bertanding</th>
+            <th scope="col">Stadium</th>
+            <th scope="col">Tanggal dan Waktu</th>
         </tr>
         </thead>
     <tbody>
         {%for game in list_pertandingan%}
         <tr>
-            <td>{{game.tim_a}}</td>
-            <td>{{game.tim_b}}</td>
-            <td>
-                <form METHOD="POST">     
-                    <input hidden id="time" value={{game.id_pertandingan}} type="text" name="pertandingan"></input>  
-                    <button type="submit"  class="btn btn-primary" style="background-color: rgb(115, 17, 17); border: 0px; padding: 10px 40px; font-size: 16px; border-radius: 30px; color: white; filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));">Pilih</button>
-                </form>
-            </td>
+            <td>{{game.tim_a}} vs {{game.tim_b}}</td>
+            <td>{{game.stadium}}</td>
+            <td>{{game.display}}</td>
         </tr>
     </tbody>
     {%endfor%}

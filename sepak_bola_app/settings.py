@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tiket',
-    'authentication'
+    'authentication',
+    'pertandingan',
+    'rapat'
 ]
 
 MIDDLEWARE = [
