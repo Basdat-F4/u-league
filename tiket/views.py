@@ -15,23 +15,23 @@ def get_stadium_date(request):
 
     if request.method != "POST":
         return render(request, "choose_stadium.html", context)
-    
-    context = {"isNotValid" : False, "message":"Harap masukan data yang lengkap"}
-    
-    stadium = request.POST["stadium"]
-    tanggal = request.POST["tanggal"]
+    else:
+        context = {"isNotValid" : False, "message":"Harap masukan data yang lengkap"}
+        
+        stadium = request.POST["stadium"]
+        tanggal = request.POST["tanggal"]
 
-    context["isNotValid"] = not stadium or not tanggal
-    print(context["isNotValid"])
+        context["isNotValid"] = not stadium or not tanggal
+        print(context["isNotValid"])
 
-    if(context["isNotValid"]):
-        context["stadiums"] = res
-        return render(request, "choose_stadium.html", context)
-    
-    forms['stadium'] = stadium
-    forms['tanggal'] = tanggal
+        if(context["isNotValid"]):
+            context["stadiums"] = res
+            return render(request, "choose_stadium.html", context)
+        
+        forms['stadium'] = stadium
+        forms['tanggal'] = tanggal
 
-    return redirect("/tiket/list-time")
+        return redirect("/tiket/list-time")
 
 @csrf_exempt
 def get_time(request):
@@ -48,11 +48,9 @@ def get_time(request):
 
     if request.method != "POST":
         return render(request, "choose_time.html", context)
-    
-    waktu = request.POST['waktu']
-    forms['waktu'] = waktu
-
-    print(waktu)
+    else:
+        waktu = request.POST['waktu']
+        forms['waktu'] = waktu
     
     return redirect("/tiket/list-game")
 
@@ -70,18 +68,15 @@ def get_game(request):
             GROUP BY P.id_pertandingan, A.nama_tim, B.nama_tim;
             """)
     
-    print({forms['stadium']})
-    print({forms['waktu']})
-    print(res)
     context = {"list_pertandingan": res}
 
     if request.method != "POST":
         return render(request, "choose_game.html", context)
+    else:
+        pertandingan = request.POST['pertandingan']
+        forms['pertandingan'] = pertandingan
     
-    pertandingan = request.POST['pertandingan']
-    forms['pertandingan'] = pertandingan
-    
-    return redirect("/tiket/beli")
+        return redirect("/tiket/beli")
 
 @csrf_exempt
 def ticket_buy(request):
@@ -94,24 +89,24 @@ def ticket_buy(request):
 
     if request.method != "POST":
         return render(request, "buy_ticket.html", context)
+    else:
+        jenis = request.POST['jenis']
+        pembayaran = request.POST['pembayaran']
     
-    jenis = request.POST['jenis']
-    pembayaran = request.POST['pembayaran']
-    
-    lists = {}
+        lists = {}
 
-    username = request.session["username"]
-    print(username)
-    lists['id_penonton'] = query(f"SELECT id_penonton FROM PENONTON WHERE username = '{username}'")[0][0]
-    print(lists['id_penonton'])
-    lists['pertandingan'] = forms["pertandingan"]
-    lists['jenis'] = jenis
-    lists['pembayaran'] = pembayaran
-    lists['receipt'] = uuid.uuid1(random.randint(0, 281474976710655))
+        username = request.session["username"]
+        print(username)
+        lists['id_penonton'] = query(f"SELECT id_penonton FROM PENONTON WHERE username = '{username}'")[0][0]
+        print(lists['id_penonton'])
+        lists['pertandingan'] = forms["pertandingan"]
+        lists['jenis'] = jenis
+        lists['pembayaran'] = pembayaran
+        lists['receipt'] = uuid.uuid1(random.randint(0, 281474976710655))
 
-    res = query(f"""INSERT INTO PEMBELIAN_TIKET VALUES 
-        ('{lists['receipt']}', '{lists['id_penonton']}', '{lists['jenis']}', '{lists['pembayaran']}', '{lists['pertandingan']}') """)
-    
-    print(res)
-    return redirect("/")
+        res = query(f"""INSERT INTO PEMBELIAN_TIKET VALUES 
+            ('{lists['receipt']}', '{lists['id_penonton']}', '{lists['jenis']}', '{lists['pembayaran']}', '{lists['pertandingan']}') """)
+        
+        print(res)
+        return redirect("/")
     
