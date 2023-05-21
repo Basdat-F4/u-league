@@ -7,12 +7,11 @@ Aplikasi ini dibuat menggunakan Django 4.2 yang support Python 3.8, 3.9, 3.10, d
 
 2. Aktifkan python environtment dengan mengetik perintah berikut di terminal.
 
-    Di Windows
+    Di Windows (Powershell)
 
     ```
-    basdat-tk-env\Scripts\activate
+    basdat-tk-env\bin\activate.ps1
     ```
-
 
     Di Mac.
 
