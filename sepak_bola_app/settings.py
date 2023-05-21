@@ -81,6 +81,8 @@ TEMPLATES = [
     },
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+
 WSGI_APPLICATION = 'sepak_bola_app.wsgi.application'
 
 
