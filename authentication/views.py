@@ -77,6 +77,7 @@ def login(request):
             return redirect(next)
         else:
             # update later, if role = "blabla"
+            print(request.session["username"])
             return redirect("/")
 
 
