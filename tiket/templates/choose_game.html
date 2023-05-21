@@ -1,0 +1,87 @@
+{% extends 'penontonBase.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Pilih Stadium</title>
+    <style>
+        .field_selection {
+          width:100%;
+          padding: 12px 24px;
+          margin: 8px 0;
+          box-sizing: border-box;
+          border-radius: 10px;
+          border: 3px solid rgb(0, 0, 0);
+          background-color: white;
+          filter: drop-shadow(4px 2px 2px rgba(0, 0, 0, 0.098));
+        }
+        p {
+            text-align: center;
+            font-family: sans-serif;
+        }
+        a:link {
+          color:rgb(0, 0, 0);
+        }
+        a:visited {
+          color:rgb(0, 0, 0);
+        } 
+        ul {
+            font-family: sans-serif;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding-bottom: 50px;
+            border-radius: 20px;
+            display: block;
+            margin: 0 auto;
+            margin-top: 60px;
+        }
+        body {
+          background-image: linear-gradient(-45deg, rgb(2, 4, 2), rgb(92, 15, 15));
+          background-position: center center;
+          margin: 0;
+          padding: 0;
+          min-height: 100vh;
+          background-repeat: no-repeat;
+        }
+        .redirect_link:link, .redirect_link:visited {
+          color:rgb(0, 0, 0);
+          font-weight: bold;
+        }
+
+        .row {
+            margin-bottom: 10px;
+        }
+      </style>
+{% endblock meta %}
+
+{% block content %}
+<div class="container" style="width: 400px;">
+    <H1 style="display:block; text-align:center; padding-top: 48px; padding-bottom: 24px; font-weight: bold;">List Pertandingan</H1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Tim 1</th>
+            <th scope="col">Tim 2</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+    <tbody>
+        {%for game in list_pertandingan%}
+        <tr>
+            <td>{{game.tim_a}}</td>
+            <td>{{game.tim_b}}</td>
+            <td>
+                <form METHOD="POST">     
+                    <input hidden id="time" value={{game.id_pertandingan}} type="text" name="pertandingan"></input>  
+                    <button type="submit"  class="btn btn-primary" style="background-color: rgb(115, 17, 17); border: 0px; padding: 10px 40px; font-size: 16px; border-radius: 30px; color: white; filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));">Pilih</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+    {%endfor%}
+      </table>
+    </div>
+</div>
+
+{% endblock content %}

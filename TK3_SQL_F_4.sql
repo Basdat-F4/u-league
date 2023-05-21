@@ -6,11 +6,6 @@ CREATE SCHEMA "u-league";
 
 SET SEARCH_PATH TO "u-league";
 
---
--- trigger for tiket
---
-
-
 
 --
 -- table structure for table user_system

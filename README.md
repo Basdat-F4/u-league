@@ -13,6 +13,8 @@ Aplikasi ini dibuat menggunakan Django 4.2 yang support Python 3.8, 3.9, 3.10, d
     basdat-tk-env\Scripts\activate
     ```
 
+    note: kalo gabisa runserver coba `basdat-tk-env\Scripts\activate`
+
     Di Mac.
 
     ```
@@ -45,3 +47,26 @@ Sebelum ingin menginstall dependency baru pada aplikasi, jangan lupa aktifkan en
 ```
 python -m pip freeze > requirements.txt
 ```
+
+<hr>
+<br>
+<br>
+<h1> <b>⚽ BASDAT F4: U-LEAGUE ⚽ </b></h1>
+<h2> <b>Deskripsi 📑 </b> </h2>
+U-League adalah liga sepak bola antar universitas dan memerlukan
+sistem untuk merekam informasi dan aktivitas yang terjadi. Aplikasi ini hadir sebagai sistem tersebut.
+
+<h2> <b> Role 🙍 </b> </h2>
+
+1. Manajer 
+2. Panitia
+3. Penonton
+
+<h2> <b> Anggota Kelompok: </b> </h2>
+<ul>
+<li>2106652000 - Alizha</li>
+<li>2106750263 - Naufal Weise Widyatama</li>
+<li>2106751902 - Alvin Widi Nugroho</li>
+<li>2106751285 -	Azmi Rahmadisha</li?>
+<li>2106650222 -	Rania Maharani Narendra</li>
+</ul>
