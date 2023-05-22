@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from utils.query import query
 from django.views.decorators.csrf import csrf_exempt
-
+import uuid
 
 
 # Create your views here.
@@ -102,3 +102,101 @@ def logout(request):
     else:
         return redirect("/")
 
+@csrf_exempt
+def register_manajer(request):
+    if request.method != "POST":
+        return render(request, 'register-manajer.html')
+    else:
+        username = str(request.POST['username'])
+        password = str(request.POST["password"])
+        fname = str(request.POST['fname'])
+        lname = str(request.POST['lname'])
+        no_telp = str(request.POST["hp"])
+        email = str(request.POST["email"])
+        alamat = str(request.POST['alamat'])
+        status = request.POST.getlist('status')
+        id = uuid.uuid4()
+        isValid = username and email and fname and lname and password and no_telp and status
+
+        if not isValid:
+            print('gagal')
+            context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
+            return render(request, 'register-manajer.html', context)
+        else:
+            a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
+            print(a)
+            b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
+            print(b)
+            c = query(f"INSERT INTO manajer VALUES ('{id}', '{username}')")
+            print(c)
+            for (stat) in status:
+                d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
+                print(d)
+            return redirect("/login")
+        
+@csrf_exempt
+def register_penonton(request):
+    if request.method != "POST":
+        return render(request, 'register-penonton.html')
+    else:
+        username = str(request.POST['username'])
+        password = str(request.POST["password"])
+        fname = str(request.POST['fname'])
+        lname = str(request.POST['lname'])
+        no_telp = str(request.POST["hp"])
+        email = str(request.POST["email"])
+        alamat = str(request.POST['alamat'])
+        status = request.POST.getlist('status')
+        id = uuid.uuid4()
+        isValid = username and email and fname and lname and password and no_telp and status
+
+        if not isValid:
+            print('gagal')
+            context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
+            return render(request, 'register-penonton.html',context)
+        else:
+            a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
+            print(a)
+            b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
+            print(b)
+            c = query(f"INSERT INTO penonton VALUES ('{id}', '{username}')")
+            print(c)
+            for (stat) in status:
+                d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
+            return redirect("/login")
+
+@csrf_exempt
+def register_panitia(request):
+    if request.method != "POST":
+        return render(request, 'register-panitia.html')
+    else:
+        username = str(request.POST['username'])
+        password = str(request.POST["password"])
+        fname = str(request.POST['fname'])
+        lname = str(request.POST['lname'])
+        no_telp = str(request.POST["hp"])
+        email = str(request.POST["email"])
+        alamat = str(request.POST['alamat'])
+        status = request.POST.getlist('status')
+        id = uuid.uuid4()
+        jabatan = str(request.POST['jabatan'])
+        isValid = username and email and fname and lname and password and no_telp and status and jabatan
+
+        if not isValid:
+            print('gagal')
+            context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
+            return render(request, 'register-panitia.html', context)
+        else:
+            a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
+            print(a)
+            b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
+            print(b)
+            c = query(f"INSERT INTO panitia VALUES ('{id}', '{jabatan} ,'{username}')")
+            print(c)
+            for (stat) in status:
+                d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
+                print(d)
+            return redirect("/login")

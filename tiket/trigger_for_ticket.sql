@@ -28,7 +28,7 @@ WHERE id_pertandingan = NEW.id_pertandingan
 GROUP BY id_pertandingan;
 
 IF (ticketSoldNum >= ticketCapacity) THEN
-	RAISE EXCEPTION 'Tiket untuk pertandingan sudah habis';
+	RAISE EXCEPTION 'Tiket untuk pertandingan ini sudah habis';
 END IF;
 
 IF (gameTicketNum >= 5) THEN 

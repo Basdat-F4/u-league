@@ -84,7 +84,8 @@ def ticket_buy(request):
     list_pembayaran = ['Shopeepay', 'Gopay', 'OVO', 'Debit']
     context = {
         'list_jenis': list_jenis,
-        'list_pembayaran': list_pembayaran
+        'list_pembayaran': list_pembayaran,
+        'isNotValid': False
     }
 
     if request.method != "POST":
@@ -107,6 +108,10 @@ def ticket_buy(request):
         res = query(f"""INSERT INTO PEMBELIAN_TIKET VALUES 
             ('{lists['receipt']}', '{lists['id_penonton']}', '{lists['jenis']}', '{lists['pembayaran']}', '{lists['pertandingan']}') """)
         
-        print(res)
+        if isinstance(res, Exception):
+            context['message'] = str(res).partition('CONTEXT')[0]
+            context["isNotValid"] = True
+            return render(request, "buy_ticket.html", context)
+        
         return redirect("/")
     
