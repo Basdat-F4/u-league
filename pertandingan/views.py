@@ -11,6 +11,7 @@ def get_game(request):
             AND P.id_pertandingan = B.id_pertandingan
             AND S.id_stadium = P.stadium
             AND A.nama_tim != B.nama_tim
+            AND 
             GROUP BY P.id_pertandingan, A.nama_tim, B.nama_tim, S.nama;
             """)
     

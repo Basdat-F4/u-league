@@ -78,7 +78,13 @@ def login(request):
         else:
             # update later, if role = "blabla"
             print(request.session["username"])
-            return redirect("/")
+            if (role == "manajer"):
+                return redirect("/dashboard-manajer")
+            elif (role == "penonton"):
+                return redirect("/dashboard-penonton")
+            elif (role == 'panitia'):
+                return redirect("/dashboard-panitia")
+
 
 
 def login_view(request):
@@ -200,3 +206,92 @@ def register_panitia(request):
                 d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
                 print(d)
             return redirect("/login")
+        
+def show_penonton_data(request):
+    username = request.session["username"]
+    id_penonton = query(f"SELECT id_penonton FROM PENONTON WHERE username = '{username}'")[0][0]
+    res1 = query(f"""SELECT *
+                    FROM NON_PEMAIN
+                    WHERE id = '{id_penonton}';
+                """)
+    
+    res2 = query(f""" SELECT status FROM STATUS_NON_PEMAIN WHERE id_non_pemain = '{id_penonton}';
+                """)
+    
+    res3 = query(f"""
+            SELECT DISTINCT ON (P.id_pertandingan) P.id_pertandingan, A.nama_tim as tim_a, B.nama_tim as tim_b, S.nama as stadium, concat(TO_CHAR(P.start_datetime::timestamp::date, ' DD Month YYYY'), ', ', TO_CHAR(start_datetime,'HH:MI'), ' - ', TO_CHAR(end_datetime,'HH:MI')) as display  
+            FROM PERTANDINGAN P, TIM_PERTANDINGAN A, TIM_PERTANDINGAN B, STADIUM S, PEMBELIAN_TIKET PT
+            WHERE P.id_pertandingan = A.id_pertandingan
+            AND P.id_pertandingan = B.id_pertandingan
+            AND S.id_stadium = P.stadium
+            AND PT.id_pertandingan = P.id_pertandingan
+            AND A.nama_tim != B.nama_tim
+            AND PT.id_penonton = '{id_penonton}'
+            GROUP BY P.id_pertandingan, A.nama_tim, B.nama_tim, S.nama;
+            """)
+
+    context = {'res1': res1[0], 'res2':res2, 'username': username, 'pertandingan': res3, 'noOrder': False}
+
+    if (len(res3) < 1):
+        context["pertandingan"] = "Belum Memesan Pertandingan"
+        context["noOrder"] = True
+
+    return render(request, "dashboard-penonton.html", context)
+
+def show_manajer_data(request):
+    username = request.session["username"]
+    id_manajer = query(f"SELECT id_manajer FROM MANAJER WHERE username = '{username}'")[0][0]
+    res1 = query(f"""SELECT *
+                    FROM NON_PEMAIN
+                    WHERE id = '{id_manajer}';
+                """)
+    
+    res2 = query(f""" SELECT status FROM STATUS_NON_PEMAIN WHERE id_non_pemain = '{id_manajer}';
+                """)
+    
+    res3 = query(f""" SELECT nama_tim
+                    FROM TIM_MANAJER
+                    WHERE id_manajer = '{id_manajer}'
+                """)
+
+    context = {'res1': res1[0], 'res2':res2, 'username': username, 'tim': res3, 'noTim': False}
+
+    if (len(res3) < 1):
+        context["tim"] = "Belum Membuat Tim"
+        context["noTim"] = True
+
+    return render(request, "dashboard-manajer.html", context)
+
+def show_panitia_data(request):
+    username = request.session["username"]
+    id_panitia = query(f"SELECT id_panitia FROM PANITIA WHERE username = '{username}'")[0][0]
+    res1 = query(f"""SELECT *
+                    FROM NON_PEMAIN
+                    WHERE id = '{id_panitia}';
+                """)
+    
+    jabatan = query(f"SELECT jabatan FROM PANITIA WHERE username = '{username}'")[0][0]
+    
+    res2 = query(f""" SELECT status FROM STATUS_NON_PEMAIN WHERE id_non_pemain = '{id_panitia}';
+                """)
+    
+    res3 = query(f"""
+            SELECT DISTINCT ON (P.id_pertandingan) P.id_pertandingan, A.nama_tim as tim_a, B.nama_tim as tim_b, S.nama as stadium, concat(TO_CHAR(R.datetime::timestamp::date, ' DD Month YYYY'), ', ', TO_CHAR(R.datetime,'HH:MI')) as display, Concat(N.nama_depan, ' ', N.nama_belakang) as panitia, R.isi_rapat as isi  
+            FROM PERTANDINGAN P, TIM_PERTANDINGAN A, TIM_PERTANDINGAN B, STADIUM S, RAPAT R, Non_Pemain N
+            WHERE P.id_pertandingan = A.id_pertandingan
+            AND P.id_pertandingan = B.id_pertandingan
+            AND S.id_stadium = P.stadium
+            AND R.id_pertandingan = P.id_pertandingan
+            AND N.id = R.perwakilan_panitia
+            AND A.nama_tim != B.nama_tim
+            AND R.perwakilan_panitia = '{id_panitia}'
+            GROUP BY P.id_pertandingan, A.nama_tim, B.nama_tim, S.nama, R.datetime, panitia, isi;
+            """)
+
+    context = {'res1': res1[0], 'res2':res2, 'username': username, 'rapat': res3, 'noRapat': False, 'jabatan': jabatan}
+
+    if (len(res3) < 1):
+        context["rapat"] = "Belum Ada Rapat"
+        context["noRapat"] = True
+
+    return render(request, "dashboard-panitia.html", context)

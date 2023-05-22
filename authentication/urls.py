@@ -9,5 +9,9 @@ urlpatterns = [
     path('logout/', logout, name='logout'),
     path('register-manajer/', register_manajer, name='register_manajer'),
     path('register-panitia/', register_panitia, name='register-panitia'),
-    path('register-penonton/', register_penonton, name='register-penonton')
+    path('register-penonton/', register_penonton, name='register-penonton'),
+    path('dashboard-penonton/', show_penonton_data, name='show_penonton_data'),
+    path('dashboard-manajer/', show_manajer_data, name='show_manajer_data'),
+    path('dashboard-panitia/', show_panitia_data, name='show_panitia_data'),
+
 ]
