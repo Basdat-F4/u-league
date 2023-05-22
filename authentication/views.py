@@ -93,6 +93,12 @@ def login_view(request):
 
     return render(request, "login.html")
 
+def register_view(request):
+    if is_authenticated(request):
+        return redirect("/")
+
+    return render(request, "register.html")
+
 
 def logout(request):
     next = request.GET.get("next")
@@ -110,6 +116,8 @@ def logout(request):
 
 @csrf_exempt
 def register_manajer(request):
+    context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
     if request.method != "POST":
         return render(request, 'register-manajer.html')
     else:
@@ -126,23 +134,27 @@ def register_manajer(request):
 
         if not isValid:
             print('gagal')
-            context = {'message': "Harap isi data dengan benar!",
-                       'gagal': True}
             return render(request, 'register-manajer.html', context)
         else:
             a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
             print(a)
-            b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
-            print(b)
-            c = query(f"INSERT INTO manajer VALUES ('{id}', '{username}')")
-            print(c)
-            for (stat) in status:
-                d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
-                print(d)
-            return redirect("/login")
+            if isinstance(a, Exception):
+                context['message'] = str(a).partition('CONTEXT')[0]
+                context["gagal"] = True
+                return render(request, 'register-manajer.html', context)
+            else:
+                b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
+                print(b)
+                c = query(f"INSERT INTO manajer VALUES ('{id}', '{username}')")
+                print(c)
+                for (stat) in status:
+                    d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
+                    print(d)
+                return redirect("/login")
         
 @csrf_exempt
 def register_penonton(request):
+    context = {'message': "Harap isi data dengan benar!", 'gagal': True}
     if request.method != "POST":
         return render(request, 'register-penonton.html')
     else:
@@ -159,22 +171,27 @@ def register_penonton(request):
 
         if not isValid:
             print('gagal')
-            context = {'message': "Harap isi data dengan benar!",
-                       'gagal': True}
             return render(request, 'register-penonton.html',context)
         else:
             a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
             print(a)
-            b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
-            print(b)
-            c = query(f"INSERT INTO penonton VALUES ('{id}', '{username}')")
-            print(c)
-            for (stat) in status:
-                d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
-            return redirect("/login")
+            if isinstance(a, Exception):
+                context['message'] = str(a).partition('CONTEXT')[0]
+                context["gagal"] = True
+                return render(request, 'register-penonton.html', context)
+            else:
+                b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
+                print(b)
+                c = query(f"INSERT INTO penonton VALUES ('{id}', '{username}')")
+                print(c)
+                for (stat) in status:
+                    d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
+                return redirect("/login")
 
 @csrf_exempt
 def register_panitia(request):
+    context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
     if request.method != "POST":
         return render(request, 'register-panitia.html')
     else:
@@ -192,20 +209,24 @@ def register_panitia(request):
 
         if not isValid:
             print('gagal')
-            context = {'message': "Harap isi data dengan benar!",
-                       'gagal': True}
             return render(request, 'register-panitia.html', context)
         else:
             a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
             print(a)
-            b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
-            print(b)
-            c = query(f"INSERT INTO panitia VALUES ('{id}', '{jabatan} ,'{username}')")
-            print(c)
-            for (stat) in status:
-                d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
-                print(d)
-            return redirect("/login")
+            
+            if isinstance(a, Exception):
+                context['message'] = str(a).partition('CONTEXT')[0]
+                context["gagal"] = True
+                return render(request, 'register-panitia.html', context)
+            else: 
+                b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
+                print(b)
+                c = query(f"INSERT INTO panitia VALUES ('{id}', '{jabatan} ,'{username}')")
+                print(c)
+                for (stat) in status:
+                    d = query(f"INSERT INTO status_non_pemain VALUES ('{id}', '{stat}')")
+                    print(d)
+                return redirect("/login")
         
 def show_penonton_data(request):
     username = request.session["username"]
