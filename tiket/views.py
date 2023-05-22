@@ -113,5 +113,5 @@ def ticket_buy(request):
             context["isNotValid"] = True
             return render(request, "buy_ticket.html", context)
         
-        return redirect("/")
+        return redirect("/dashboard-penonton")
     

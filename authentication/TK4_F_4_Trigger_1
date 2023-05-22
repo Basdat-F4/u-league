@@ -1,0 +1,27 @@
+--
+-- stored procedure for auth
+--
+
+CREATE OR REPLACE FUNCTION VALIDATE_USERNAME() RETURNS trigger AS
+$$
+BEGIN
+
+IF (NEW.username IN (
+    SELECT username FROM USER_SYSTEM
+)) THEN
+	RAISE EXCEPTION 'username % sudah ada', NEW.username;
+END IF;
+
+RETURN NEW;
+
+END
+$$
+LANGUAGE plpgsql;
+
+--
+-- TRIGGER for ticket
+--
+
+CREATE TRIGGER CHECK_USERNAME 
+BEFORE INSERT ON USER_SYSTEM
+FOR EACH ROW EXECUTE PROCEDURE VALIDATE_USERNAME();
