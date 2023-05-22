@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Registrasi Penonton</title>
+    <style>
+        .title {
+            color: #4d0c0c;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+  
+        .register-container {
+            display: block;
+            margin: 0 auto;
+            max-width: 500px;
+            justify-content: center;
+            align-items: center;
+        }
+  
+        .form-control {
+            margin-bottom: 20px;
+            width: 400px;
+        }
+        
+        #to-login {
+            margin-top: 16px;
+            text-align: center;
+        }
+  
+        table {
+            display: flex;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .group {
+          display: flex;
+          align-items: center;
+          margin-bottom: 2em;
+        }
+        input[type="checkbox"]{
+          position: absolute;
+          opacity: 0;
+          z-index: -1;
+        }
+        .label_cb {
+          position: relative;
+          margin-right: 1em;
+          padding-left: 2em;
+          padding-right: 1em;
+          line-height: 2;
+          cursor: pointer;
+          &:before {
+            box-sizing: border-box;
+            content: " ";
+            position: absolute;
+            top: 0.3em;
+            left: 0;
+            display: block;
+            width: 1.4em;
+            height: 1.4em;
+            border: 2px solid rgb(153, 60, 60);
+            border-radius: .25em;
+            z-index: -1;
+          }
+        }
+        /* Checked */
+        input[type="checkbox"]:checked + label{
+          padding-left: 1em;
+          color: rgb(255, 255, 255);
+          &:before {
+            top: 0;
+            width: 100%;
+            height: 2em;
+            background: rgb(135, 49, 49);
+          }
+        }
+  
+        /* Transition */
+        label,
+        label::before {
+          -webkit-transition: .25s all ease;
+          -o-transition: .25s all ease;
+          transition: .25s all ease;
+        }
+        .form-label {
+          font-weight: bold;
+        }
+    </style>
+{% endblock meta %}
+
+{% block content %}
+<div class="container register-container justify-content-center">
+    <h1 class="title"> FORM REGISTRASI </h1>
+    {% if gagal %}
+        <p style="font-weight: bold; text-align: center; background-color: rgb(121, 43, 43); color: white;"> Harap isi data dengan benar! </p> 
+    {% endif %}
+    <form method="POST">
+      <table>
+        <tr>
+            <td>
+              <label for="id_username" class="form-label">Username</label>
+              <input style="width: 100%;" type="text" name="username" maxlength="50" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" placeholder="Username" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="id_password1" class="form-label">Password</label>
+              <input type="password" style="width: 100%;" name="password" maxlength="20" autocomplete="new-password" required id="id_password1" placeholder="Password" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="name-field" class="form-label">Nama Depan</label>
+              <input type="text" name="fname" style="width: 100%;" maxlength="50" required placeholder="Nama Depan" class="form-control" id="name-field">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="name-field2" class="form-label">Nama Belakang</label>
+              <input type="text" name="lname"  style="width: 100%;" maxlength="50" required="" placeholder="Nama Belakang" class="form-control" id="name-field2">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="contact-field" class="form-label">Nomor HP</label>
+              <input type="text" name="hp" style="width: 100%;" maxlength="15" required id="id_contact" placeholder="Nomor HP" class="form-control" id="contact-field">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="id_email" class="form-label">Email</label>
+              <input type="email" name="email" style="width: 100%;" maxlength="50" required id="id_email" placeholder="Email" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="address-field" class="form-label">Alamat</label>
+              <input type="text" name="alamat" style="width: 100%;" maxlength="255" required id="id_contact" placeholder="Alamat" class="form-control" id="address-field">
+            </td>
+          </tr>
+        <tr>
+          <td>
+            <label style="font-weight: bold; padding-bottom: 20px;">Status</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="group">
+              <input type="checkbox" name="status" value='Mahasiswa' id="cb1" />
+              <label class="label_cb" for="cb1">Mahasiswa</label>
+              <input type="checkbox" name="status" id="cb2" value='Dosen' />
+              <label class="label_cb" for="cb2">Dosen</label>
+              <input type="checkbox" name="status" id="cb3" value='Tendik' />
+              <label class="label_cb" for="cb3">Tendik</label>
+              <input type="checkbox" name="status" id="cb4" value='Alumni'/>
+              <label class="label_cb" for="cb4">Alumni</label>
+              <input type="checkbox" name="status" id="cb5" value='Umum'/>
+              <label class="label_cb" for="cb5">Umum</label>
+            </div>
+          </td>
+        </tr>
+    </table>
+    
+    </div>
+      <tr>
+        <td>
+          <input type="submit" value="Daftar" class="btn btn-primary button_select" style="display: block; margin: auto; margin-bottom:20px; background-color: rgb(117, 11, 11); border: 0px; padding: 10px 30px; font-size: 16px; border-radius: 20px; width: 200px; color: rgb(255, 255, 255); filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));">
+        </td>
+      </tr>
+    </form>
+
+{% endblock content %}

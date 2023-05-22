@@ -11,6 +11,7 @@ def map_cursor(cursor):
 
 def query(query_str: str):
     hasil = []
+    error = False
     with connection.cursor() as cursor:
         cursor.execute("SET SEARCH_PATH TO 'u-league'")
 
