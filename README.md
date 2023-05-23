@@ -4,16 +4,17 @@ Aplikasi ini dibuat menggunakan Django 4.2 yang support Python 3.8, 3.9, 3.10, d
 
 1. Install python dengan versi yang sesuai bila belum.
 
+2. Buat python environment bila belum
 
-2. Aktifkan python environtment dengan mengetik perintah berikut di terminal.
+python -m venv basdat-tk-env
 
-    Di Windows (Powershell)
+3. Aktifkan python environtment dengan mengetik perintah berikut di terminal.
+
+    Di Windows
 
     ```
     basdat-tk-env\Scripts\activate
     ```
-
-    note: kalo gabisa runserver coba `basdat-tk-env\Scripts\activate`
 
     Di Mac.
 
@@ -21,7 +22,7 @@ Aplikasi ini dibuat menggunakan Django 4.2 yang support Python 3.8, 3.9, 3.10, d
     source basdat-tk-env/bin/activate
     ```
 
-3. Install dependencies project dengan menjalankan perintah berikut. Perintah ini akan menginstall django dan dependency lainnya.
+4. Install dependencies project dengan menjalankan perintah berikut. Perintah ini akan menginstall django dan dependency lainnya.
 
     ```
     pip install -r requirements.txt
