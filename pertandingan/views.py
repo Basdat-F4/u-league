@@ -20,3 +20,43 @@ def get_game(request):
         return render(request, "list_pertandingan_manajer.html", context)
     else:
         return render(request, "list_pertandingan_penonton.html", context)
+
+def list_pertandingan_panitia(request):
+    jenis_grup = "ABCDEFGH"
+    tim_bertanding = query(f"""
+            SELECT DISTINCT a.nama_tim AS tim_a, b.nama_tim AS tim_b
+            FROM TIM a, TIM b, TIM_PERTANDINGAN tp
+            WHERE a.nama_tim = tp.nama_tim AND b.nama_tim = tp.nama_tim
+            """)
+
+    context = {"list_pertandingan_panitia": res}
+
+    if (request.session["role"] == 'panitia'):
+        return render(request, "list_pertandingan_panitia.html", context)
+
+def pembuatan_pertandingan(request):
+    if (request.session["role"] == 'panitia'):
+        return render(request, "list_pertandingan_panitia.html", context)
+
+    if request.method =="POST":
+        stadium = request.POST.get('stadium')
+
+def pendaftaran_pertandingan(request):
+    if (request.session["role"] == 'panitia'):
+        return render(request, "list_pertandingan_panitia.html", context)
+
+    if request.method == "POST":
+        wasit_utama = request.POST.get('wasit_utama')
+        wasit_pembantu_satu = request.POST.get('wasit_pembantu_satu')
+        wasit_pembantu_dua = request.POST.get('wasit_pembantu_dua')
+        wasit_cadangan = request.POST.get('wasit_cadangan')
+
+        res = query(f"INSERT INTO PERTANDINGAN VALUE")
+        # pertandingan --> ID_Pertandingan, StartDatetime, EndDatetime, Stadium
+def list_waktu_stadium(request):
+    return request
+
+def list_pertandingan(request):
+    return request
+    
+    
