@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'tiket',
     'authentication',
     'pertandingan',
-    'rapat'
+    'rapat',
+    'team',
 ]
 
 MIDDLEWARE = [
