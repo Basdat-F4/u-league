@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'pertandingan',
     'rapat',
     'team',
+    'peminjaman_stadium'
 ]
 
 MIDDLEWARE = [

@@ -22,5 +22,6 @@ urlpatterns = [
     path('', include('authentication.urls')),
     path('tiket/', include('tiket.urls')),
     path('pertandingan/', include('pertandingan.urls')),
-    path('rapat/', include('rapat.urls'))
+    path('rapat/', include('rapat.urls')),
+    path('peminjaman_stadium/', include('peminjaman_stadium.urls'))
 ]
