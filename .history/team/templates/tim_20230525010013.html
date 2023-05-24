@@ -159,24 +159,21 @@ body {
         </thead>
         <tbody>
           {% for pemain in pemain_list %}
-              <tr>
-                  <td>{{ pemain.nama_pemain }}</td>
-                  <td>{{ pemain.nomor_hp }}</td>
-                  <td>{{ pemain.tgl_lahir }}</td>
-                  <td>{{ pemain.is_captain }}</td>
-                  <td>{{ pemain.posisi }}</td>
-                  <td>{{ pemain.npm }}</td>
-                  <td>{{ pemain.jenjang }}</td>
-                  <td style="text-decoration: underline;">
-                      {% if not pemain.is_captain %}
-                          <a href="{% url 'team:set_captain' pemain.id %}">Make Captain</a>
-                      {% endif %}
-                      <a href="{% url 'team:delete_player' pemain.id %}">Remove from Team</a>
-                  </td>
-              </tr>
+            <tr>
+              <td>{{ pemain.nama_pemain }}</td>
+              <td>{{ pemain.nomor_hp }}</td>
+              <td>{{ pemain.tgl_lahir }}</td>
+              <td>{{ pemain.is_captain }}</td>
+              <td>{{ pemain.posisi }}</td>
+              <td>{{ pemain.npm }}</td>
+              <td>{{ pemain.jenjang }}</td>
+              <td style="text-decoration: underline;"></td>t
+                <a href="#">Make Captain</a>
+                <a href="#">Delete</a>
+              </td>
+            </tr>
           {% endfor %}
-      </tbody>
-      
+        </tbody>
       </table>
       <table>
         <thead>

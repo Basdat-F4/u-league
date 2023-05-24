@@ -171,7 +171,7 @@ body {
                       {% if not pemain.is_captain %}
                           <a href="{% url 'team:set_captain' pemain.id %}">Make Captain</a>
                       {% endif %}
-                      <a href="{% url 'team:delete_player' pemain.id %}">Remove from Team</a>
+                      <a href="#">Delete</a>
                   </td>
               </tr>
           {% endfor %}

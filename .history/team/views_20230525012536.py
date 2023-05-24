@@ -129,33 +129,22 @@ def reg_pelatih(request):
 
 def set_captain(request, player_id):
     with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute(f"SELECT is_captain FROM Pemain WHERE id_pemain = '{player_id}'")
         is_captain = cursor.fetchone()[0]
 
         if is_captain:
-            # The player is already a captain, no action needed
-            pass
+            # If the player is already a captain, remove the captain status
+            cursor.execute(f"UPDATE Pemain SET is_captain = false WHERE id_pemain = '{player_id}'")
+
         else:
-            # Remove captain status from existing captain, if any
-            cursor.execute(f"UPDATE Pemain SET is_captain = false WHERE Nama_Tim = (SELECT Nama_Tim FROM Pemain WHERE id_pemain = '{player_id}') AND is_captain = true")
             # Assign the player as a captain
-            cursor.execute(f"UPDATE Pemain SET is_captain = true WHERE id_pemain = '{player_id}'")
+            cursor.execute(f"UPDATE Pemain SET is_captain = true WHERE id_pemain = '{player_id}")
+        
 
         # Print a message to check if the update query was executed
         print("Player captain updated:", cursor.rowcount)
 
-    return redirect('team:get_team')
-
-def delete_player(request, player_id):
-    with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
-        cursor.execute(f"UPDATE Pemain SET Nama_Tim = NULL WHERE id_pemain = '{player_id}'")
-
-        # Print a message to check if the update query was executed
-        print("Player removed from team:", cursor.rowcount)
-
-    return redirect('team:get_team')
+    return render("team:get_team")
 
 # Punya orang, review lagi soalnya susah bgt
 

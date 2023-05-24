@@ -147,15 +147,6 @@ def set_captain(request, player_id):
 
     return redirect('team:get_team')
 
-def delete_player(request, player_id):
-    with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
-        cursor.execute(f"UPDATE Pemain SET Nama_Tim = NULL WHERE id_pemain = '{player_id}'")
-
-        # Print a message to check if the update query was executed
-        print("Player removed from team:", cursor.rowcount)
-
-    return redirect('team:get_team')
 
 # Punya orang, review lagi soalnya susah bgt
 

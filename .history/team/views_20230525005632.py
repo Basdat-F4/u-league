@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from utils.query import query
 from django.db import connection
 from django.contrib.auth.decorators import login_required
@@ -32,27 +32,42 @@ def get_team(request):
     nama_tim = nama_tim_result[0].nama_tim
     with connection.cursor() as cursor:
         cursor.execute("SET SEARCH_PATH TO 'u-league'")
-        cursor.execute("""
-            SELECT pemain.id_pemain,  CONCAT(pemain.nama_depan, ' ', pemain.nama_belakang) AS Nama_Pemain, pemain.nomor_hp, pemain.tgl_lahir, pemain.is_captain,
-            pemain.posisi, pemain.npm, pemain.jenjang
-            FROM pemain
-            WHERE nama_tim = %s
-        """, [nama_tim])
+        cursor.execute(f"""
+    SELECT
+        CONCAT(pemain.nama_depan, ' ', pemain.nama_belakang) AS Nama_Pemain,
+        pemain.nomor_hp,
+        pemain.tgl_lahir,
+        pemain.is_captain,
+        pemain.posisi,
+        pemain.npm,
+        pemain.jenjang
+    FROM
+        pemain
+    WHERE nama_tim='{nama_tim}'
+    GROUP BY Nama_Pemain,
+        pemain.nomor_hp,
+        pemain.tgl_lahir,
+        pemain.is_captain,
+        pemain.posisi,
+        pemain.npm,
+        pemain.jenjang
+    """)
         pemain_raw = cursor.fetchall()
 
         pemain_list = []
 
         for res in pemain_raw:
-            pemain_list.append({
-                "id": res[0],
-                "nama_pemain": res[1],
-                "nomor_hp": res[2],
-                "tgl_lahir": res[3],
-                "is_captain": res[4],
-                "posisi": res[5],
-                "npm": res[6],
-                "jenjang": res[7],
-            })
+            pemain_list.append(
+                {
+                    "nama_pemain": res[0],
+                    "nomor_hp": res[1],
+                    "tgl_lahir": res[2],
+                    "is_captain": res[3],
+                    "posisi": res[4],
+                    "npm": res[5],
+                    "jenjang": res[6],
+                }
+            )
 
         cursor.execute(f"""
     SELECT CONCAT(Non_Pemain.Nama_Depan, ' ', Non_Pemain.Nama_Belakang) AS Nama, Non_Pemain.Nomor_HP, Non_Pemain.Email, Non_Pemain.Alamat, Spesialisasi_Pelatih.Spesialisasi, Pelatih.Nama_Tim
@@ -83,7 +98,7 @@ WHERE nama_tim='{nama_tim}'
 
         context = {
             "pelatih_list": pelatih_list,
-            "pemain_list": pemain_list,
+            "pemain_list": pemain_list
         }
 
         return render(request, "tim.html", context)
@@ -127,35 +142,7 @@ def reg_pelatih(request):
 
     return render(request, 'pelatih.html', context)
 
-def set_captain(request, player_id):
-    with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
-        cursor.execute(f"SELECT is_captain FROM Pemain WHERE id_pemain = '{player_id}'")
-        is_captain = cursor.fetchone()[0]
 
-        if is_captain:
-            # The player is already a captain, no action needed
-            pass
-        else:
-            # Remove captain status from existing captain, if any
-            cursor.execute(f"UPDATE Pemain SET is_captain = false WHERE Nama_Tim = (SELECT Nama_Tim FROM Pemain WHERE id_pemain = '{player_id}') AND is_captain = true")
-            # Assign the player as a captain
-            cursor.execute(f"UPDATE Pemain SET is_captain = true WHERE id_pemain = '{player_id}'")
-
-        # Print a message to check if the update query was executed
-        print("Player captain updated:", cursor.rowcount)
-
-    return redirect('team:get_team')
-
-def delete_player(request, player_id):
-    with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
-        cursor.execute(f"UPDATE Pemain SET Nama_Tim = NULL WHERE id_pemain = '{player_id}'")
-
-        # Print a message to check if the update query was executed
-        print("Player removed from team:", cursor.rowcount)
-
-    return redirect('team:get_team')
 
 # Punya orang, review lagi soalnya susah bgt
 
