@@ -28,8 +28,7 @@ def tes_daftar(request):
 
 def get_team(request):
     username = request.session["username"]
-    nama_tim_result = query(f"SELECT tm.Nama_Tim FROM Tim_Manajer tm JOIN manajer m ON tm.ID_Manajer = m.ID_Manajer WHERE m.Username = '{username}'")
-    nama_tim = nama_tim_result[0].nama_tim
+    nama_tim= query(f"SELECT tm.Nama_Tim FROM Tim_Manajer tm JOIN manajer m ON tm.ID_Manajer = m.ID_Manajer WHERE m.Username = '{username}'")
     with connection.cursor() as cursor:
         cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute(f"""
@@ -74,7 +73,7 @@ def get_team(request):
 FROM Pelatih
 JOIN Non_Pemain ON Pelatih.ID_Pelatih = Non_Pemain.ID
 JOIN Spesialisasi_Pelatih ON Pelatih.ID_Pelatih = Spesialisasi_Pelatih.ID_Pelatih
-WHERE nama_tim='{nama_tim}'
+WHERE Nama_Tim = 'AS Roma'
     """)
         pelatih_raw = cursor.fetchall()
 
@@ -93,8 +92,9 @@ WHERE nama_tim='{nama_tim}'
                 }
             )
 
+        ris = query(f"SELECT * FROM manajer WHERE USERNAME='jharken0'")
         # ris = cursor.fetchall()
-        print(nama_tim)
+        print(ris)
 
         context = {
             "pelatih_list": pelatih_list,

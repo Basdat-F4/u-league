@@ -8,6 +8,7 @@ def map_cursor(cursor):
     nt_result = namedtuple("Result", [col[0] for col in desc])
     return [nt_result(*row) for row in cursor.fetchall()]
 
+
 def query(query_str: str):
     hasil = []
     error = False

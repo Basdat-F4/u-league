@@ -74,7 +74,7 @@ def get_team(request):
 FROM Pelatih
 JOIN Non_Pemain ON Pelatih.ID_Pelatih = Non_Pemain.ID
 JOIN Spesialisasi_Pelatih ON Pelatih.ID_Pelatih = Spesialisasi_Pelatih.ID_Pelatih
-WHERE nama_tim='{nama_tim}'
+WHERE Nama_Tim = 'AS Roma'
     """)
         pelatih_raw = cursor.fetchall()
 

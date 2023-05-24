@@ -5,33 +5,28 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here
 
-# @login_required
-def team(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
-        # Get the manager's team information from the database
-        cursor.execute("""
-            SELECT tm.nama_tim
-            FROM tim_manajer tm
-            INNER JOIN manajer m ON tm.id_manajer = m.id_manajer
-            WHERE m.username = %s
-        """, [request.session["username"]])
-        team_info = cursor.fetchone()
+# # @login_required
+# def team(request):
+#     with connection.cursor() as cursor:
+#         # Get the manager's team information from the database
+#         cursor.execute("""
+#             SELECT tm.nama_tim
+#             FROM tim_manajer tm
+#             INNER JOIN manajer m ON tm.id_manajer = m.id_manajer
+#             WHERE m.username = %s
+#         """, [request.session["username"]])
+#         team_info = cursor.fetchone()
 
-    if team_info is not None and team_info[0]:
-        return get_team(request)
-    else:
-        return tes_daftar(request)
+#     if team_info is not None and team_info[0]:
+#         return render(request, "team.html")
+#     else:
+#         return render(request, "daftar_team.html")
 
 def tes_daftar(request):
     return render(request, "pendaftaran-tim.html")
 
 def get_team(request):
-    username = request.session["username"]
-    nama_tim_result = query(f"SELECT tm.Nama_Tim FROM Tim_Manajer tm JOIN manajer m ON tm.ID_Manajer = m.ID_Manajer WHERE m.Username = '{username}'")
-    nama_tim = nama_tim_result[0].nama_tim
     with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute(f"""
     SELECT
         CONCAT(pemain.nama_depan, ' ', pemain.nama_belakang) AS Nama_Pemain,
@@ -43,7 +38,7 @@ def get_team(request):
         pemain.jenjang
     FROM
         pemain
-    WHERE nama_tim='{nama_tim}'
+    WHERE nama_tim='AS Roma'
     GROUP BY Nama_Pemain,
         pemain.nomor_hp,
         pemain.tgl_lahir,
@@ -74,7 +69,7 @@ def get_team(request):
 FROM Pelatih
 JOIN Non_Pemain ON Pelatih.ID_Pelatih = Non_Pemain.ID
 JOIN Spesialisasi_Pelatih ON Pelatih.ID_Pelatih = Spesialisasi_Pelatih.ID_Pelatih
-WHERE nama_tim='{nama_tim}'
+WHERE Nama_Tim = 'AS Roma'
     """)
         pelatih_raw = cursor.fetchall()
 
@@ -93,8 +88,9 @@ WHERE nama_tim='{nama_tim}'
                 }
             )
 
+        ris = query(f"SELECT * FROM manajer WHERE USERNAME='jharken0'")
         # ris = cursor.fetchall()
-        print(nama_tim)
+        print(ris)
 
         context = {
             "pelatih_list": pelatih_list,
@@ -105,7 +101,6 @@ WHERE nama_tim='{nama_tim}'
 
 def reg_pemain(request):
     with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute("""
             SELECT CONCAT(nama_depan, ' ', nama_belakang) AS Nama_Pemain
             FROM pemain
@@ -121,7 +116,6 @@ def reg_pemain(request):
 
 def reg_pelatih(request):
     with connection.cursor() as cursor:
-        cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute("""
             SELECT CONCAT(Non_Pemain.Nama_Depan, ' ', Non_Pemain.Nama_Belakang) AS Nama, Spesialisasi_Pelatih.Spesialisasi
             FROM Pelatih
