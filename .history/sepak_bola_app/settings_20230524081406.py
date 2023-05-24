@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 
 from pathlib import Path
-import environ
+import env
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -108,6 +108,7 @@ DATABASES = {
         'PORT': '6913',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

@@ -5,22 +5,22 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here
 
-# # @login_required
-# def team(request):
-#     with connection.cursor() as cursor:
-#         # Get the manager's team information from the database
-#         cursor.execute("""
-#             SELECT tm.nama_tim
-#             FROM tim_manajer tm
-#             INNER JOIN manajer m ON tm.id_manajer = m.id_manajer
-#             WHERE m.username = %s
-#         """, [request.session["username"]])
-#         team_info = cursor.fetchone()
+# @login_required
+def team(request):
+    with connection.cursor() as cursor:
+        # Get the manager's team information from the database
+        cursor.execute("""
+            SELECT tm.nama_tim
+            FROM tim_manajer tm
+            INNER JOIN manajer m ON tm.id_manajer = m.id_manajer
+            WHERE m.username = %s
+        """, [request.session["username"]])
+        team_info = cursor.fetchone()
 
-#     if team_info is not None and team_info[0]:
-#         return render(request, "team.html")
-#     else:
-#         return render(request, "daftar_team.html")
+    if team_info is not None and team_info[0]:
+        return render(request, "team.html")
+    else:
+        return render(request, "daftar_team.html")
 
 def tes_daftar(request):
     return render(request, "pendaftaran-tim.html")
@@ -88,10 +88,6 @@ WHERE Nama_Tim = 'AS Roma'
                 }
             )
 
-        cursor.execute(f"SELECT * FROM manajer WHERE USERNAME='jharken0'")
-        ris = cursor.fetchall()
-        print(ris)
-
         context = {
             "pelatih_list": pelatih_list,
             "pemain_list": pemain_list
@@ -136,16 +132,12 @@ def reg_pelatih(request):
 
     return render(request, 'pelatih.html', context)
 
-# Punya orang, review lagi soalnya susah bgt
-
-from collections import namedtuple
-
 def namedtuplefetchall(cursor):
     "Return all rows from a cursor as a namedtuple"
     desc = cursor.description
     nt_result = namedtuple('Result', [col[0] for col in desc])
     return [nt_result(*row) for row in cursor.fetchall()]
-
+    
 def get_query(str):
     '''Execute SQL query and return its result as a list'''
     cursor = connection.cursor()

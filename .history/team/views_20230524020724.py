@@ -1,26 +1,25 @@
 from django.shortcuts import render
 from utils.query import query
 from django.db import connection
-from django.contrib.auth.decorators import login_required
 
 # Create your views here
 
-# # @login_required
-# def team(request):
-#     with connection.cursor() as cursor:
-#         # Get the manager's team information from the database
-#         cursor.execute("""
-#             SELECT tm.nama_tim
-#             FROM tim_manajer tm
-#             INNER JOIN manajer m ON tm.id_manajer = m.id_manajer
-#             WHERE m.username = %s
-#         """, [request.session["username"]])
-#         team_info = cursor.fetchone()
+@login_required
+def team(request):
+    with connection.cursor() as cursor:
+        # Get the manager's team information from the database
+        cursor.execute("""
+            SELECT tm.nama_tim
+            FROM tim_manajer tm
+            INNER JOIN manajer m ON tm.id_manajer = m.id
+            WHERE m.username = %s
+        """, [request.session["username"]])
+        team_info = cursor.fetchone()
 
-#     if team_info is not None and team_info[0]:
-#         return render(request, "team.html")
-#     else:
-#         return render(request, "daftar_team.html")
+    if team_info is not None and team_info[0]:
+        return render(request, "team.html")
+    else:
+        return render(request, "daftar_team.html")
 
 def tes_daftar(request):
     return render(request, "pendaftaran-tim.html")
@@ -88,10 +87,6 @@ WHERE Nama_Tim = 'AS Roma'
                 }
             )
 
-        cursor.execute(f"SELECT * FROM manajer WHERE USERNAME='jharken0'")
-        ris = cursor.fetchall()
-        print(ris)
-
         context = {
             "pelatih_list": pelatih_list,
             "pemain_list": pemain_list
@@ -135,72 +130,6 @@ def reg_pelatih(request):
     }
 
     return render(request, 'pelatih.html', context)
-
-# Punya orang, review lagi soalnya susah bgt
-
-from collections import namedtuple
-
-def namedtuplefetchall(cursor):
-    "Return all rows from a cursor as a namedtuple"
-    desc = cursor.description
-    nt_result = namedtuple('Result', [col[0] for col in desc])
-    return [nt_result(*row) for row in cursor.fetchall()]
-
-def get_query(str):
-    '''Execute SQL query and return its result as a list'''
-    cursor = connection.cursor()
-    result = []
-    try:
-        cursor.execute(str)
-        result = namedtuplefetchall(cursor)
-    except Exception as e:
-        # print("An exception occurred:", str(e))
-        result = e
-    finally:
-        cursor.close()
-        return result
-
-def daftar_sponsor(request):
-    # id = str(request.session["id"]).strip()
-    id = 'aa8a676a-07a3-4eb6-bcec-54a74ee35c93'
-
-    query = get_query(
-        f'''SELECT nama_brand
-        FROM sponsor
-        WHERE id NOT IN 
-        (SELECT id_sponsor FROM atlet_sponsor WHERE id_atlet = '{id}')
-        '''
-    )
-    
-    if request.method != "POST":
-        return render(request, "daftar_sponsor.html", {"query":query})
-    
-    nama_brand = request.POST["sponsor"]
-    tgl_mulai = request.POST["tgl_selesai"]
-    tgl_selesai = request.POST["tgl_selesai"]
-    
-    id_sponsor = get_query(
-        f'''SELECT id
-        FROM SPONSOR
-        WHERE nama_brand = '{nama_brand}'
-        '''
-    )
-    
-    get_query(
-        f'''INSERT INTO atlet_sponsor
-        VALUES ('{id}', '{id_sponsor[0].id}', '{tgl_mulai}', '{tgl_selesai}');
-        '''
-    )
-    
-    query = get_query(
-        f'''SELECT nama_brand
-        FROM sponsor
-        WHERE id NOT IN 
-        (SELECT id_sponsor FROM atlet_sponsor WHERE id_atlet = '{id}')
-        '''
-    )
-
-    return render(request, "daftar_sponsor.html", {"query":query})
 
 
 # def query(sql_query):

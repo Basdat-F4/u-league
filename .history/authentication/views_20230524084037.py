@@ -25,7 +25,7 @@ def get_session_data(request):
     
 def get_role(username):
     res = query(f"SELECT * FROM manajer WHERE USERNAME='{username}'")
-    # print(res)
+    print(res)
     if len(res) > 0:
         return 'manajer'
     res = query(f"SELECT * FROM panitia WHERE USERNAME ='{username }'")

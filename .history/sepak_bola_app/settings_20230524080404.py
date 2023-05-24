@@ -88,6 +88,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 WSGI_APPLICATION = 'sepak_bola_app.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -108,6 +109,7 @@ DATABASES = {
         'PORT': '6913',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

@@ -3,6 +3,7 @@ from utils.query import query
 from django.views.decorators.csrf import csrf_exempt
 import uuid
 
+
 # Create your views here.
 def homepage(request):
     return render(request, "login-and-register.html")
@@ -25,7 +26,6 @@ def get_session_data(request):
     
 def get_role(username):
     res = query(f"SELECT * FROM manajer WHERE USERNAME='{username}'")
-    # print(res)
     if len(res) > 0:
         return 'manajer'
     res = query(f"SELECT * FROM panitia WHERE USERNAME ='{username }'")
@@ -84,6 +84,8 @@ def login(request):
                 return redirect("/dashboard-penonton")
             elif (role == 'panitia'):
                 return redirect("/dashboard-panitia")
+
+
 
 def login_view(request):
     if is_authenticated(request):

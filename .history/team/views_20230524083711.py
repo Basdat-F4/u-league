@@ -88,8 +88,7 @@ WHERE Nama_Tim = 'AS Roma'
                 }
             )
 
-        cursor.execute(f"SELECT * FROM manajer WHERE USERNAME='jharken0'")
-        ris = cursor.fetchall()
+        cursor.execute(f"SELECT * FROM manajer WHERE USERNAME='jharken0'").fetchall()
         print(ris)
 
         context = {

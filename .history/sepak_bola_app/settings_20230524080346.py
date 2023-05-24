@@ -88,6 +88,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 WSGI_APPLICATION = 'sepak_bola_app.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -97,7 +98,6 @@ WSGI_APPLICATION = 'sepak_bola_app.wsgi.application'
 
 # You are connected to database "postgres" as user "postgres" on host "localhost" (address "::1") at port "5433".
 DATABASESURL = 'postgresql://postgres:5mc2PNlZZqYh2yKvMbrD@containers-us-west-30.railway.app:6913/railway'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -108,6 +108,7 @@ DATABASES = {
         'PORT': '6913',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

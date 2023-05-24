@@ -3,6 +3,7 @@ from utils.query import query
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here
 
 # # @login_required
@@ -88,8 +89,7 @@ WHERE Nama_Tim = 'AS Roma'
                 }
             )
 
-        cursor.execute(f"SELECT * FROM manajer WHERE USERNAME='jharken0'")
-        ris = cursor.fetchall()
+        ris = query(f"SELECT * FROM user_system WHERE USERNAME='jharken0'")
         print(ris)
 
         context = {
