@@ -245,10 +245,11 @@ def insert_pelatih(request):
                         else:
                             error_message = "An error occurred while updating the coach."
                         return redirect(reverse('team:reg_pelatih') + f'?error_message={error_message}')
+
                 else:
                     error_message = "Selected coach is not available or already assigned to a team."
 
-    return redirect('team:get_team')
+    return render(request, 'pelatih.html', {'error_message': error_message})
 
 
 def set_captain(request, player_id):

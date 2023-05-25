@@ -98,8 +98,6 @@ body {
 	</style>
 </head>
 <body>
-  <!-- Place this code where you want the error message to be displayed -->
-
     <nav class="navbar navbar-expand-lg" style="background-image: linear-gradient(-45deg, rgb(2, 4, 2), rgb(92, 15, 15));">
         <div class="container-fluid">
           <a class="navbar-brand" style="font-weight: bold; color: white;" href="#">U-League</a>
@@ -129,14 +127,7 @@ body {
         </div>
       </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-	<!-- Place this code where you want the error message to be displayed -->
-<!-- Place this code where you want the error message to be displayed -->
-{% if error_message %}
-    <div class="alert alert-danger" role="alert">
-        {{ error_message }}
-    </div>
-{% endif %}
-    <div class="container">
+	<div class="container">
 		<div class="box">
 			<h2 style="margin-bottom: 50px">DAFTAR PELATIH</h2>
             <style>
@@ -144,20 +135,28 @@ body {
                     text-align: center;
                 }
             </style>
-<label for="name" style="display: block; margin: 0 auto; font-weight: bold; font-size: 20px; text-align: center; margin-bottom: 10px;">Pelatih yang Mau Didaftarkan</label>
-<div class="dropdown-container">
-    <form action="{% url 'team:insert_pelatih' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="pelatih">Pelatih:</label>
-            <select class="my-select" name="pelatih">
+        <label for="name" style="display: block; margin: 0 auto; font-weight: bold; font-size: 20px; text-align: center; margin-bottom: 10px;">Pelatih yang Mau Didaftarkan</label>
+        <div class ="dropdown-container">
+          <form action="{% url 'team:insert_pelatih' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="pelatih">Pelatih:</label>
+              <select class="my-select" name="pelatih">
                 {% for pelatih_option in pelatih_options %}
-                <option value="{{ pelatih_option.nama_pelatih }}">{{ pelatih_option.nama_pelatih }} - {{ pelatih_option.spesialisasi }}</option>
+                  <option value="{{ pelatih_option.nama_pelatih }}">{{ pelatih_option.nama_pelatih }} - {{ pelatih_option.spesialisasi }}</option>
                 {% endfor %}
-            </select>
-        </div>
-        <div style="display: flex; justify-content: center;">
-            <input type="submit" value="Submit" class="submit-button">
-        </div>
-    </form>
-</div>
+              </select>
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <input type="submit" value="Submit" class="submit-button">
+            </div>
+          </form>
+          {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+          </div>
