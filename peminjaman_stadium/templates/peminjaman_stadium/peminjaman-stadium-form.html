@@ -30,7 +30,37 @@
         </div>
         <button type="submi" class="btn btn-primary">Cari Jadwal</button>
       </form>
+    {% if list_waktu %}
+    <div>
+      <h1 class="mt-4">Pilih Jadwal Peminjaman</h1>
+      <table class="table">
+        <thead>
+            <tr>
+                <td>List Waktu</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for waktu in list_waktu %}
+            <tr>
+               <td>{{waktu.start_datetime|time:"TIME_FORMAT"}} - {{waktu.end_datetime|time:"TIME_FORMAT"}}</td> 
+               <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id_stadium" value="{{id_stadium}}"/>
+                    <input type="hidden" name="start_datetime" value='{{waktu.start_datetime|date:"c"}}'/>
+                    <input type="hidden" name="end_datetime" value='{{waktu.end_datetime|date:"c"}}'/>
+                  <button type="submit" class="btn btn-primary">Pesan</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
     </div>
+    {% endif %}
+    </div>
+   
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
