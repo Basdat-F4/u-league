@@ -85,27 +85,28 @@ def pendaftaran_pertandingan(request, stadium_tanggal):
         #         INSERT INTO PERTANDINGAN VALUES ('{id_pertandingan}', '{tanggal}', '{tanggal}', '{id_stadium}')
         #         """)
             res = query(f""""
-                                    INSERT INTO WASIT_BERTUGAS VALUES('{wasit_utama}','{id_pertandingan}', 'utama')
-                                    """)
+                    INSERT INTO WASIT_BERTUGAS VALUES('{wasit_utama}','{id_pertandingan}', 'utama')
+                    """)
 
             res = query(f"""
-                                        INSERT INTO WASIT_BERTUGAS VALUES('{wasit_pembantu_satu}','{id_pertandingan}', 'pembantu 1')
-                                        """)
+                    INSERT INTO WASIT_BERTUGAS VALUES('{wasit_pembantu_satu}','{id_pertandingan}', 'pembantu 1')
+                    """)
 
             res = query(f"""
-                                INSERT INTO WASIT_BERTUGAS VALUES('{wasit_pembantu_dua}','{id_pertandingan}', 'pembantu 2')
-                                """)
+                    INSERT INTO WASIT_BERTUGAS VALUES('{wasit_pembantu_dua}','{id_pertandingan}', 'pembantu 2')
+                    """)
             res = query(f"""
-                                INSERT INTO WASIT_BERTUGAS VALUES('{wasit_cadangan}','{id_pertandingan}', 'cadangan')
-                                """)
+                    INSERT INTO WASIT_BERTUGAS VALUES('{wasit_cadangan}','{id_pertandingan}', 'cadangan')
+                    """)
 
             res = query(f"""
-                        INSERT INTO TIM_PERTANDINGAN VALUES('{tim_satu}', '{id_pertandingan}', 0)
-                        """)
+                    INSERT INTO TIM_PERTANDINGAN VALUES('{tim_satu}', '{id_pertandingan}', 0)
+                    """)
 
             res = query(f"""
-                        INSERT INTO TIM_PERTANDINGAN VALUES('{tim_dua}', '{id_pertandingan}', 0)
-                        """)
+                    INSERT INTO TIM_PERTANDINGAN VALUES('{tim_dua}', '{id_pertandingan}', 0)
+                    """)
+
             return redirect('/pertandingan/list-pertandingan-panitia/')
         except Exception as e:
             messages.error(request, e)
@@ -144,10 +145,52 @@ def list_waktu_stadium(request):
                 WHERE p.stadium = s.id_stadium AND s.nama;                                                                                                                                               ma = '{stadium}');
             """)
 
-    context = context = {"nama": stadium, "waktu_stadium": waktu}
+    context = {"nama": stadium, "waktu_stadium": waktu}
 
     # if (request.session["role"] == 'panitia'):
     return render(request, "list_waktu_stadium_panitia.html", context)
+
+def update_query(request):
+    up_wasit_utama = query(f"""
+                        UPDATE WASIT_BERTUGAS
+                        SET id_wasit = wasit_utama, posisi = 'utama'
+                        WHERE id_pertandingan = id_pertandingan;
+                        """)
+    up_wasit_pembantu_satu = query(f"""
+                        UPDATE WASIT_BERTUGAS
+                        SET id_wasit = wasit_utama, posisi = 'pembantu'
+                        WHERE id_pertandingan = id_pertandingan;
+                        """)
+    up_wasit_pembantu_dua = query(f""" 
+                        UPDATE WASIT_BERTUGAS
+                        SET id_wasit = wasit_utama, posisi = 'pembantu'
+                        WHERE id_pertandingan = id_pertandingan;
+                                """)
+    up_wasit_cadangan = query(f"""
+                        UPDATE WASIT_BERTUGAS
+                        SET id_wasit = wasit_utama, posisi = 'cadangan'
+                        WHERE id_pertandingan = id_pertandingan;
+                                """)
+    up_tim1 = query(f""" 
+                UPDATE TIM_BERTANDING
+                SET nama_tim = nama_tim
+                WHERE id_pertandingan = id_pertandingan;
+                        """)
+    up_tim2 = query(f""" 
+                UPDATE TIM_BERTANDING
+                SET nama_tim = nama_tim
+                WHERE id_pertandingan = id_pertandingan;
+                                """)
+
+def delete_query(request):
+    del_pertandingan = query("""
+                        DELETE FROM PERTANDINGAN
+                        WHERE id_pertandingan = id_pertandingan;
+                        """)                                
+
+    
+
+
 
     
     
