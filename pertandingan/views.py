@@ -1,6 +1,11 @@
 from django.shortcuts import render
-
 from utils.query import query
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
+from django.urls import reverse
+from datetime import datetime, timedelta
+
 
 # Create your views here.
 def get_game(request):
@@ -20,3 +25,74 @@ def get_game(request):
         return render(request, "list_pertandingan_manajer.html", context)
     else:
         return render(request, "list_pertandingan_penonton.html", context)
+
+def list_pertandingan_baru(request):
+    res = query(f"""SELECT DISTINCT ON (P.id_pertandingan) P.id_pertandingan, 
+    STRING_AGG(tp.nama_tim, ' vs ') AS Nama_Tim,
+    P.start_datetime,
+    (
+        SELECT t1.nama_tim AS nama_pemenang
+        FROM tim_pertandingan t1
+        WHERE t1.id_pertandingan = P.id_pertandingan
+        ORDER BY t1.skor DESC
+        LIMIT 1
+    ) AS pemenang
+        FROM PERTANDINGAN P
+        JOIN TIM_PERTANDINGAN tp ON P.id_pertandingan = tp.id_pertandingan
+        WHERE tp.nama_tim != (
+        SELECT t2.nama_tim
+        FROM TIM_PERTANDINGAN t2
+        WHERE t2.id_pertandingan = P.id_pertandingan
+        ORDER BY t2.skor DESC
+        LIMIT 1
+)
+GROUP BY P.id_pertandingan, P.start_datetime;
+""")
+
+    for every in res:
+        time_difference = every.start_datetime - datetime.now()
+        if time_difference < timedelta(minutes=5) and time_difference.total_seconds() > 0:
+            print("The time difference is less than five minutes and the time has not passed yet.")
+        elif time_difference.total_seconds() <= 0:
+            print("The time has already passed.")
+        else:
+            print("The time difference is greater than or equal to five minutes.")
+
+    
+    context = {
+        'pertandingans':res
+    }
+
+    return render(request, 'list-pertandingan.html', context)
+
+def list_peristiwa(request):
+    if (request.method == "POST"):
+        data = json.loads(request.body)
+        nama_tim = data.get('nama_tim')
+
+        response = HttpResponseRedirect(reverse('pertandingan:list_peristiwa'))
+        response['location'] = reverse('pertandingan:list_peristiwa')
+
+        response.set_cookie("nama_tim", nama_tim)
+
+        print(response)
+        return response
+    if (request.method == "GET"):
+        print('masuk get')
+        nama_tim = request.COOKIES.get('nama_tim')
+        res = query(f"""
+        select id_pertandingan, jenis, pemain.id_pemain, nama_depan, nama_tim 
+        from peristiwa 
+        inner join pemain 
+        on peristiwa.id_pemain=pemain.id_pemain
+         where nama_tim='{nama_tim}' order by id_pertandingan
+        """)
+        print(res)
+
+        context = {
+            'peristiwas':res
+        }
+        
+        return render(request, 'peristiwa-tim.html', context)
+    
+    
