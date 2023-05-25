@@ -18,17 +18,21 @@
         <div class="mb-3">
           <label for="isi-rapat" class="form-label">Stadium</label>
           <select class="form-select" aria-label="Pilih stadium" name="id_stadium">
-            <option selected>Pilih Stadium</option>
+            <option>Pilih Stadium</option>
             {% for stadium in list_stadium %}
-              <option value="{{stadium.id_stadium}}">{{stadium.nama}}</option>
+              <option value="{{stadium.id_stadium}}"
+                {% if request.GET.id_stadium == stadium.id_stadium|stringformat:"s" %}
+                  selected
+                {% endif %}
+                >{{stadium.nama}}</option>
             {% endfor %}
           </select>
         </div>
         <div class="mb-3">
           <label for="isi-rapat" class="form-label">Tanggal</label>
-          <input type="date" class="form-control" name="date" />
+          <input type="date" class="form-control" name="date" value="{{book_date}}"/>
         </div>
-        <button type="submi" class="btn btn-primary">Cari Jadwal</button>
+        <button type="submit" class="btn btn-primary" >Cari Jadwal</button>
       </form>
     {% if list_waktu %}
     <div>

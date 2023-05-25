@@ -24,7 +24,7 @@ def create_peminjaman(request):
         if id_stadium is not None and date is not None :
             list_waktu = get_list_waktu(id_stadium, date)
 
-        return render(request, 'peminjaman_stadium/peminjaman-stadium-form.html', {"list_stadium": list_stadium, "list_waktu": list_waktu, "id_stadium": id_stadium, "date": date})
+        return render(request, 'peminjaman_stadium/peminjaman-stadium-form.html', {"list_stadium": list_stadium, "list_waktu": list_waktu, "id_stadium": id_stadium, "book_date": date})
 
     username = request.session["username"]
     id_manajer = query(f"SELECT id_manajer FROM manajer WHERE username='{username}'")[0][0]

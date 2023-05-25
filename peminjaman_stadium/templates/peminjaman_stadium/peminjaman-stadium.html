@@ -14,14 +14,16 @@
                 <th scope="col">#</th>
                 <th scope="col">Stadium</th>
                 <th scope="col">Waktu</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {% for row in list_peminjaman %}
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">x</th>
                 <td>{{row.stadium}}</td>
-                <td>{{row.start_datetime}}- {{row.end_datetime}}</td>
+                <td>{{row.start_datetime}}- {{row.end_datetime|time}}</td>
+                <td><button class="btn btn-secondary">Edit</button></td>
               </tr>
               {% endfor %}
             </tbody>
