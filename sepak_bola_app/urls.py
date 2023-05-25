@@ -23,6 +23,6 @@ urlpatterns = [
     path('tiket/', include('tiket.urls')),
     path('pertandingan/', include('pertandingan.urls')),
     path('rapat/', include('rapat.urls')),
-    path('peminjaman_stadium/', include('peminjaman_stadium.urls'))
+    path('peminjaman_stadium/', include('peminjaman_stadium.urls')),
     path('team/', include('team.urls')),
 ]
