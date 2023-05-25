@@ -35,6 +35,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+basdat-tk-env/
 build/
 develop-eggs/
 dist/
