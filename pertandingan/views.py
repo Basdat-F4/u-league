@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import uuid
 from utils.query import query
+from django.contrib import messages
 
 # Create your views here.
 def get_game(request):
@@ -38,70 +39,93 @@ def list_pertandingan_panitia(request):
     return render(request, "list_pertandingan_panitia.html", context)
 
 def pemilihan_stadium(request):
-    res = query(f"SELECT nama FROM stadium")
-    print(res)
-    context = {'list_stadium': res}
-
     if request.method =="POST":
         stadium = request.POST.get('stadium')
-        tanggal = request.POST.get('tanggal')
+        tanggal = request.POST.get('date')
+
+        stadium_tanggal = str(stadium) + '_' + str(tanggal)
+
+        return redirect(f'/pertandingan/pendaftaran-pertandingan/{stadium_tanggal}')
+
+
+    res = query(f"SELECT nama, id_stadium FROM stadium")
+
+    context = {'list_stadium': res}
+
 
     # if (request.session["role"] == 'panitia'):
     return render(request, "pilih_stadium.html", context)
     
-def pendaftaran_pertandingan(request):
-    # if request.method == "POST":
-    #     wasit_utama = request.POST.get('wasit_utama')
-    #     wasit_pembantu_satu = request.POST.get('wasit_pembantu_satu')
-    #     wasit_pembantu_dua = request.POST.get('wasit_pembantu_dua')
-    #     wasit_cadangan = request.POST.get('wasit_cadangan')
-    #     tim_satu = request.POST.get('tim_satu')
-    #     tim_dua = request.POST.get('tim_dua')
+def pendaftaran_pertandingan(request, stadium_tanggal):
+    if request.method == "POST":
+        wasit_utama = request.POST.get('wasit_utama')
+        wasit_pembantu_satu = request.POST.get('wasit_pembantu_1')
+        wasit_pembantu_dua = request.POST.get('wasit_pembantu_2')
+        wasit_cadangan = request.POST.get('wasit_cadangan')
+        tim_satu = request.POST.get('tim_1')
+        tim_dua = request.POST.get('tim_2')
+        id_stadium = request.POST.get('stadium_tanggal').split("_")[0]
+        tanggal = request.POST.get('stadium_tanggal').split("_")[1]
 
-    id_pertandingan = uuid.uuid4()
+        id_pertandingan = uuid.uuid4()
 
-    # try:
-    # insert_wasit_utama = query(f""""
-    #                         INSERT INTO WASIT_BERTUGAS VALUES('{id_wasit}','{id_pertandingan}', '{posisi_wasit}')
-    #                         """)
+        print(id_pertandingan)
+        print(wasit_utama)
+        print(wasit_cadangan)
+        print(wasit_pembantu_satu)
+        print(wasit_pembantu_dua)
+        print(wasit_cadangan)
+        print(tim_satu)
+        print(tim_dua)
+        print(id_stadium)
+        print(tanggal)
 
-    # insert_wasit_pembantu = query(f"""
-    #                             INSERT INTO WASIT_BERTUGAS VALUES('{id_wasit}','{id_pertandingan}', '{posisi_wasit}')
-    #                             """)
+        try:
+            res = query(f"""
+        #         INSERT INTO PERTANDINGAN VALUES ('{id_pertandingan}', '{tanggal}', '{tanggal}', '{id_stadium}')
+        #         """)
+            res = query(f""""
+                                    INSERT INTO WASIT_BERTUGAS VALUES('{wasit_utama}','{id_pertandingan}', 'utama')
+                                    """)
 
-    # insert_cadangan = query(f"""
-    #                     INSERT INTO WASIT_BERTUGAS VALUES('{id_wasit}','{id_pertandingan}', '{posisi_wasit}')
-    #                     """)
+            res = query(f"""
+                                        INSERT INTO WASIT_BERTUGAS VALUES('{wasit_pembantu_satu}','{id_pertandingan}', 'pembantu 1')
+                                        """)
 
-    # insert_tim_satu = query(f"""
-    #             INSERT INTO TIM VALUES('{tim_satu}', '{id_pertandingan}', 0)
-    #             """)
+            res = query(f"""
+                                INSERT INTO WASIT_BERTUGAS VALUES('{wasit_pembantu_dua}','{id_pertandingan}', 'pembantu 2')
+                                """)
+            res = query(f"""
+                                INSERT INTO WASIT_BERTUGAS VALUES('{wasit_cadangan}','{id_pertandingan}', 'cadangan')
+                                """)
 
-    # insert_tim_dua = query(f"""
-    #             INSERT INTO TIM VALUES('{tim_dua}', '{id_pertandingan}', 0)
-    #             """)
+            res = query(f"""
+                        INSERT INTO TIM_PERTANDINGAN VALUES('{tim_satu}', '{id_pertandingan}', 0)
+                        """)
+
+            res = query(f"""
+                        INSERT INTO TIM_PERTANDINGAN VALUES('{tim_dua}', '{id_pertandingan}', 0)
+                        """)
+            return redirect('/pertandingan/list-pertandingan-panitia/')
+        except Exception as e:
+            messages.error(request, e)
+        
 
     wasit = query(f"""
-                SELECT DISTINCT ON (w.id_wasit) CONCAT(nama_depan, ' ', nama_belakang) AS nama_wasit
-                FROM NON_PEMAIN np, WASIT w
-                WHERE np.ID = w.id_wasit;
+                SELECT CONCAT(nama_depan, ' ', nama_belakang) AS nama_wasit, id
+                FROM NON_PEMAIN np natural join WASIT w;
             """)
 
-    #print(wasit)
+    id_stadium = stadium_tanggal.split("_")[0]
+    tanggal = stadium_tanggal.split("_")[1]
 
     tim_res = query(f"""
                 SELECT t.nama_tim
                 FROM tim t;
             """)
-
-    # res = query(f"""
-    #         INSERT INTO PERTANDINGAN VALUES ('{id_pertandingan}', '{start_datetime}', '{end_datetime}', '{stadium}')
-    #         """)
-    # except Exception as e:
-    #     messages.error(request, e)
     
     # context = {"wasit_utama" : wasit, "wasit_pembantu": wasit, "wasit_cadangan": wasit, "tim": tim_res}
-    context = {"wasit": wasit, "tim": tim_res}
+    context = {"wasit": wasit, "tim": tim_res, "stadium_tanggal":stadium_tanggal}
     #if (request.session["role"] == 'panitia'):
     return render(request, "buat_pertandingan.html", context)
 
@@ -117,7 +141,7 @@ def list_waktu_stadium(request):
                 FROM PERTANDINGAN p
                 WHERE DATE(p.start_datetime) = waktu AND p.stadium IN (
                 SELECT p.stadium FROM PERTANDINGAN p, STADIUM s
-                WHERE p.stadium = s.id_stadium AND s.nama                                                                                                                                               ma = '{stadium}');
+                WHERE p.stadium = s.id_stadium AND s.nama;                                                                                                                                               ma = '{stadium}');
             """)
 
     context = context = {"nama": stadium, "waktu_stadium": waktu}

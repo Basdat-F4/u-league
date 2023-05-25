@@ -10,21 +10,26 @@
 </div>
 
 <div class="overflow-x-auto px-8 py-4" style="margin: 0 auto; width: fit-content; border: 1px solid white; border-radius: 10px;">
+
+  <form action="/pertandingan/pemilihan-stadium/" method="post">
+    {% csrf_token %}
+    <label for="stadium">Stadium:</label>
+    <select id="stadium" name="stadium" style="background-color: transparent; border: 1px solid #38404e; border-radius: 2px;">
+      {% for stadium in list_stadium %}
+        <option value="{{ stadium.id_stadium }}">{{ stadium.nama }}</option>
+      {% endfor %}
+    </select>
+    <br><br>
+
+    <label for="date">Tanggal:</label>
+    <input type="date" id="date" name="date" style="background-color: transparent;">
+    <br><br>
+    <div class="flex justify-center">
+        <button type="submit" class="text-white font-regular py-2 px-4 rounded-md" style="background-color: #38404e;">NEXT</button>
+    </div>
+  </form>
     
-        <label for="stadium">Stadium:</label>
-        <select id="stadium" name="stadium" style="background-color: transparent; border: 1px solid #38404e; border-radius: 2px;">
-          {% for stadium in list_stadium %}
-            <option value="{{ stadium.nama }}">{{ stadium.nama }}</option>
-          {% endfor %}
-        </select>
-        <br><br>
-        <label for="date">Tanggal:</label>
-        <input type="date" id="date" name="date" style="background-color: transparent;">
-        <br><br>
-        <div class="flex justify-center">
-            <button type="submit" class="text-white font-regular py-2 px-4 rounded-md" style="background-color: #38404e;">NEXT</button>
-        </div>
-    </form>
+
 </div>
 
 <br>
