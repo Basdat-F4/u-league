@@ -62,7 +62,10 @@
 <div class = "login">
     <form method="POST" action="">   
         {% if gagal %}
-            <p class="text-danger"> Username dan password tidak sesuai! </p> 
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Login gagal!</strong> Username atau Password salah!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         {% endif %}
 
         <div class="container" style="width: 400px;">

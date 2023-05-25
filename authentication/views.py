@@ -6,7 +6,17 @@ import uuid
 
 # Create your views here.
 def homepage(request):
-    return render(request, "login-and-register.html")
+    print(is_authenticated(request))
+    if (is_authenticated(request)):
+        role = get_role(request.session["username"])
+        if (role == "manajer"):
+            return redirect("/dashboard-manajer")
+        elif (role == "penonton"):
+            return redirect("/dashboard-penonton")
+        elif (role == 'panitia'):
+            return redirect("/dashboard-panitia")
+    else:
+        return render(request, "login-and-register.html")
 
 def is_authenticated(request):
     try:
@@ -23,6 +33,15 @@ def get_session_data(request):
         return {"username": request.session["username"], "role": request.session["role"]}
     except:
         return {}
+    
+def get_dashboard(request):
+    role = get_role(request.session["username"])
+    if (role == "manajer"):
+        return redirect("/dashboard-manajer")
+    elif (role == "penonton"):
+        return redirect("/dashboard-penonton")
+    elif (role == 'panitia'):
+        return redirect("/dashboard-panitia")
     
 def get_role(username):
     res = query(f"SELECT * FROM manajer WHERE USERNAME='{username}'")
@@ -85,8 +104,6 @@ def login(request):
             elif (role == 'panitia'):
                 return redirect("/dashboard-panitia")
 
-
-
 def login_view(request):
     if is_authenticated(request):
         return redirect("/")
@@ -116,8 +133,6 @@ def logout(request):
 
 @csrf_exempt
 def register_manajer(request):
-    context = {'message': "Harap isi data dengan benar!",
-                       'gagal': True}
     if request.method != "POST":
         return render(request, 'register-manajer.html')
     else:
@@ -132,15 +147,17 @@ def register_manajer(request):
         id = uuid.uuid4()
         isValid = username and email and fname and lname and password and no_telp and status
 
-        if not isValid:
+        if not isValid:     
+            context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
             print('gagal')
             return render(request, 'register-manajer.html', context)
         else:
             a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
             print(a)
             if isinstance(a, Exception):
-                context['message'] = str(a).partition('CONTEXT')[0]
-                context["gagal"] = True
+                context = {'message': str(a).partition('CONTEXT')[0],
+                       'gagal': True}
                 return render(request, 'register-manajer.html', context)
             else:
                 b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")

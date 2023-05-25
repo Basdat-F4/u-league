@@ -1,0 +1,86 @@
+{% extends 'manajerBase.html' %}
+{% block meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pesan Stadium</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+{% endblock meta %}
+    
+{% block content %}
+  <body>
+    <div class="container">
+      <h1 class="mt-4">Pesan Stadium</h1>
+      <form class="mt-4">
+        <div class="mb-3">
+          <label for="isi-rapat" class="form-label">Stadium</label>
+          <select class="form-select" aria-label="Pilih stadium" name="id_stadium">
+            <option>Pilih Stadium</option>
+            {% for stadium in list_stadium %}
+              <option value="{{stadium.id_stadium}}"
+                {% if request.GET.id_stadium == stadium.id_stadium|stringformat:"s" %}
+                  selected
+                {% endif %}
+                >{{stadium.nama}}</option>
+            {% endfor %}
+          </select>
+        </div>
+       
+        {% if initial_datetime %}
+        <div class="mb-3">
+          <label for="isi-rapat" class="form-label">Waktu Semula</label>
+          <input type="datetime-local" class="form-control"  readonly="readonly" name="initial_datetime" value="{{initial_datetime}}" />
+        </div>
+                    {% endif %}
+        <div class="mb-3">
+          <label for="isi-rapat" class="form-label">Tanggal</label>
+          <input type="date" class="form-control" name="date" value="{{book_date}}"/>
+        </div>
+        <button type="submit" class="btn btn-primary" >Cari Jadwal</button>
+      </form>
+    {% if list_waktu %}
+    <div>
+      <h1 class="mt-4">Pilih Jadwal Peminjaman</h1>
+      <table class="table">
+        <thead>
+            <tr>
+                <td>List Waktu</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for waktu in list_waktu %}
+            <tr>
+               <td>{{waktu.start_datetime|time:"TIME_FORMAT"}} - {{waktu.end_datetime|time:"TIME_FORMAT"}}</td> 
+               <td>
+                <form method="post" action='{{submission_url}}'>
+                    {% csrf_token %}
+                    <input type="hidden" name="id_stadium" value="{{id_stadium}}"/>
+                    <input type="hidden" name="start_datetime" value='{{waktu.start_datetime|date:"c"}}'/>
+                    <input type="hidden" name="end_datetime" value='{{waktu.end_datetime|date:"c"}}'/>
+                    {% if initial_datetime %}
+                      <input type="hidden" name="initial_datetime" value="{{initial_datetime}}" />
+                    {% endif %}
+                  <button type="submit" class="btn btn-primary">Pesan</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+    </div>
+   
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'manajerBase.html' %}
+
+{% block meta %}
+    <title>Peminjaman Stadium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Peminjaman Stadium</h1>
+        <h3>Daftar Pemesanan</h3>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Stadium</th>
+                <th scope="col">Waktu</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in list_peminjaman %}
+              <tr>
+                <th scope="row">x</th>
+                <td>{{row.stadium}}</td>
+                <td>{{row.start_datetime}}- {{row.end_datetime|time}}</td>
+                <td><a href="/peminjaman_stadium/form/edit?initial_datetime={{row.start_datetime|date:'c'}}&id_stadium={{row.id_stadium}}" class="btn btn-secondary">Edit</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <a class="btn btn-primary" href="/peminjaman_stadium/form/create" role="button">Tambahkan Pesanan</a>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+{% endblock content %}

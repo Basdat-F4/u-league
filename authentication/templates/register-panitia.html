@@ -94,7 +94,10 @@
 <div class="container register-container justify-content-center">
     <h1 class="title"> FORM REGISTRASI </h1>
     {% if gagal %}
-        <p style="font-weight: bold; text-align: center; background-color: rgb(121, 43, 43); color: white;"> Harap isi data dengan benar! </p> 
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Register gagal!</strong> {{message}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     {% endif %}
     <form method="POST">
       <table>
