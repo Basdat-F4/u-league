@@ -19,7 +19,7 @@ $$
 LANGUAGE plpgsql;
 
 --
--- TRIGGER for ticket
+-- TRIGGER for auth
 --
 
 CREATE TRIGGER CHECK_USERNAME 
