@@ -49,15 +49,6 @@ def list_pertandingan_baru(request):
 GROUP BY P.id_pertandingan, P.start_datetime;
 """)
 
-    for every in res:
-        time_difference = every.start_datetime - datetime.now()
-        if time_difference < timedelta(minutes=5) and time_difference.total_seconds() > 0:
-            print("The time difference is less than five minutes and the time has not passed yet.")
-        elif time_difference.total_seconds() <= 0:
-            print("The time has already passed.")
-        else:
-            print("The time difference is greater than or equal to five minutes.")
-
     
     context = {
         'pertandingans':res
