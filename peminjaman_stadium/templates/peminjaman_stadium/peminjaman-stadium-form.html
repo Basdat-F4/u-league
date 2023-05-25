@@ -28,6 +28,13 @@
             {% endfor %}
           </select>
         </div>
+       
+        {% if initial_datetime %}
+        <div class="mb-3">
+          <label for="isi-rapat" class="form-label">Waktu Semula</label>
+          <input type="datetime-local" class="form-control"  readonly="readonly" name="initial_datetime" value="{{initial_datetime}}" />
+        </div>
+                    {% endif %}
         <div class="mb-3">
           <label for="isi-rapat" class="form-label">Tanggal</label>
           <input type="date" class="form-control" name="date" value="{{book_date}}"/>
@@ -49,11 +56,14 @@
             <tr>
                <td>{{waktu.start_datetime|time:"TIME_FORMAT"}} - {{waktu.end_datetime|time:"TIME_FORMAT"}}</td> 
                <td>
-                <form method="post">
+                <form method="post" action='{{submission_url}}'>
                     {% csrf_token %}
                     <input type="hidden" name="id_stadium" value="{{id_stadium}}"/>
                     <input type="hidden" name="start_datetime" value='{{waktu.start_datetime|date:"c"}}'/>
                     <input type="hidden" name="end_datetime" value='{{waktu.end_datetime|date:"c"}}'/>
+                    {% if initial_datetime %}
+                      <input type="hidden" name="initial_datetime" value="{{initial_datetime}}" />
+                    {% endif %}
                   <button type="submit" class="btn btn-primary">Pesan</button>
                 </form>
               </td>
