@@ -133,8 +133,6 @@ def logout(request):
 
 @csrf_exempt
 def register_manajer(request):
-    context = {'message': "Harap isi data dengan benar!",
-                       'gagal': True}
     if request.method != "POST":
         return render(request, 'register-manajer.html')
     else:
@@ -149,15 +147,17 @@ def register_manajer(request):
         id = uuid.uuid4()
         isValid = username and email and fname and lname and password and no_telp and status
 
-        if not isValid:
+        if not isValid:     
+            context = {'message': "Harap isi data dengan benar!",
+                       'gagal': True}
             print('gagal')
             return render(request, 'register-manajer.html', context)
         else:
             a = query(f"INSERT INTO user_system VALUES ('{username}', '{password}')")
             print(a)
             if isinstance(a, Exception):
-                context['message'] = str(a).partition('CONTEXT')[0]
-                context["gagal"] = True
+                context = {'message': str(a).partition('CONTEXT')[0],
+                       'gagal': True}
                 return render(request, 'register-manajer.html', context)
             else:
                 b = query(f"INSERT INTO non_pemain VALUES ('{id}', '{fname}', '{lname}', '{no_telp}', '{email}', '{alamat}')")
