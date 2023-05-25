@@ -1,0 +1,60 @@
+{% extends 'panitiaBase.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="mt-4">Buat Pertandingan</h1>
+    <label>Pilih Wasit Utama:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id_wasit}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+        <label>Pilih Wasit Pembantu:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id_wasit}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+        <label>Pilih Wasit Pembantu:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id_wasit}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+        <label>Pilih Wasit Cadangan:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id_wasit}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Tim 1</th>
+                <th scope="col">Tim 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="form-select" aria-label="pilih tim">
+                            {% for data in tim %}
+                                <option value="{{data.nama_tim}}">{{data.nama_tim}}</option>
+                            {%endfor%}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" aria-label="pilih tim">
+                            {% for data in tim %}
+                                <option value="{{data.nama_tim}}">{{data.nama_tim}}</option>
+                            {%endfor%}
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+            <button type="button" class="btn btn-primary" style="background-color: rgb(92, 15, 15);">Submit</button>
+            </div>
+</body>
+{% endblock content %}
