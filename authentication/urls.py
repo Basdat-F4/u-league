@@ -14,5 +14,5 @@ urlpatterns = [
     path('dashboard-penonton/', show_penonton_data, name='show_penonton_data'),
     path('dashboard-manajer/', show_manajer_data, name='show_manajer_data'),
     path('dashboard-panitia/', show_panitia_data, name='show_panitia_data'),
-
+    
 ]
