@@ -75,4 +75,4 @@ def create_rapat(request):
     isi_rapat = request.POST.get("isi_rapat", "")
     res = query(f"""INSERT INTO rapat VALUES ('{id_pertandingan}', NOW(), '{id_panitia}', '{id_manajer_tim_a}', '{id_manajer_tim_b}', '{isi_rapat}')""")
     print(res)
-    return redirect("/rapat/mulai-rapat")
+    return redirect("/dashboard-panitia/")
