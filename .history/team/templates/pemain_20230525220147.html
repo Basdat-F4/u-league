@@ -98,10 +98,37 @@ body {
 }
 
 	</style>
-
-{% endblock meta %}
-
-{% block content %}
+</head>
+<body>
+  {% extends 'manajerBase.html' %}
+    <nav class="navbar navbar-expand-lg" style="background-image: linear-gradient(-45deg, rgb(2, 4, 2), rgb(92, 15, 15));">
+        <div class="container-fluid">
+          <a class="navbar-brand" style="font-weight: bold; color: white;" href="#">U-League</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" style="color: white;" href="#">Mengelola Tim</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: white;" href="#">Peminjaman Stadium</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: white;" href="#">List Pertandingan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: white;" href="#">History Rapat</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <button type="button" class="btn" style="color: white" data-bs-toggle="modal" data-bs-target="#newTaskModal">Dashboard</button>
+              <button class="btn btn-primary" style="background-color: rgb(255, 255, 255); border: 0px; padding: 10px 24px; font-size: 16px; border-radius: 15px; color: white; filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));"><a class="link_below" style="text-decoration: none; color: rgb(0, 0, 0);" href="#">Logout</a></button>
+            </form>
+          </div>
+        </div>
+      </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	<div class="container">
 		<div class="box">
@@ -130,5 +157,3 @@ body {
             </div>
           </form>          
         </div>
-        
-{% endblock content %}
