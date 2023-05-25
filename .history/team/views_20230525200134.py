@@ -3,8 +3,6 @@ from utils.query import query
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db import IntegrityError
-from django.contrib import messages
 
 # Create your views here
 
@@ -142,8 +140,6 @@ def reg_pemain(request):
     return render(request, "pemain.html", context)
 
 def reg_pelatih(request):
-    error_message = request.GET.get('error_message')  # Get the error_message query parameter
-
     with connection.cursor() as cursor:
         cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute("""
@@ -161,8 +157,7 @@ def reg_pelatih(request):
         ]
 
     context = {
-        'pelatih_options': pelatih_options,
-        'error_message': error_message  # Pass the error message to the template context
+        'pelatih_options': pelatih_options
     }
 
     return render(request, 'pelatih.html', context)
@@ -196,57 +191,35 @@ def insert_pemain(request):
 
     return redirect('team:get_team')
 
-from django.db import IntegrityError
-
-from django.db import IntegrityError
-
-
-from django.shortcuts import redirect
-
-from django.urls import reverse
-from django.shortcuts import redirect
-
 def insert_pelatih(request):
-    error_message = None  # Initialize the error message variable
     username = request.session["username"]
     nama_tim_result = query(f"SELECT tm.Nama_Tim FROM Tim_Manajer tm JOIN manajer m ON tm.ID_Manajer = m.ID_Manajer WHERE m.Username = '{username}'")
     nama_tim = nama_tim_result[0].nama_tim
-
     if request.method == 'POST':
-        selected_pelatih_nama = request.POST['pelatih']
+        selected_pelatih_nama = request.POST.get('pelatih')
 
         with connection.cursor() as cursor:
-            
-                cursor.execute("SET SEARCH_PATH TO 'u-league'")
+            cursor.execute("SET SEARCH_PATH TO 'u-league'")
 
-                # Get the selected pelatih information from the database
-                cursor.execute("""
-                    SELECT Pelatih.ID_Pelatih, Spesialisasi
-                    FROM Pelatih
-                    JOIN Non_Pemain ON Pelatih.ID_Pelatih = Non_Pemain.ID
-                    JOIN Spesialisasi_Pelatih ON Pelatih.ID_Pelatih = Spesialisasi_Pelatih.ID_Pelatih
-                    WHERE CONCAT(Non_Pemain.Nama_Depan, ' ', Non_Pemain.Nama_Belakang) = %s
-                        AND Pelatih.Nama_Tim IS NULL
-                """, [selected_pelatih_nama])
+            # Get the selected pelatih information from the database
+            cursor.execute("""
+                SELECT Pelatih.ID_Pelatih, Spesialisasi
+                FROM Pelatih
+                JOIN Non_Pemain ON Pelatih.ID_Pelatih = Non_Pemain.ID
+                JOIN Spesialisasi_Pelatih ON Pelatih.ID_Pelatih = Spesialisasi_Pelatih.ID_Pelatih
+                WHERE CONCAT(Non_Pemain.Nama_Depan, ' ', Non_Pemain.Nama_Belakang) = %s
+                    AND Pelatih.Nama_Tim IS NULL
+            """, [selected_pelatih_nama])
 
-                pelatih_info = cursor.fetchone()
+            pelatih_info = cursor.fetchone()
 
-                if pelatih_info:
-                    pelatih_id, spesialisasi = pelatih_info
+            if pelatih_info:
+                pelatih_id, spesialisasi = pelatih_info
 
-                    try:
-                        cursor.execute(f"UPDATE Pelatih SET Nama_Tim='{nama_tim}' WHERE id_pelatih = '{pelatih_id}'")
-                        print("Pelatih inserted into the team")
-                    except Exception as e:
-                        if "The coach already has the same specialization." in str(e):
-                            error_message = "An error occurred: The coach already has the same specialization."
-                        elif "The team already has two coaches." in str(e):
-                            error_message = "An error occurred: The team already has two coaches."
-                        else:
-                            error_message = "An error occurred while updating the coach."
-                        return redirect(reverse('team:reg_pelatih') + f'?error_message={error_message}')
-                else:
-                    error_message = "Selected coach is not available or already assigned to a team."
+                cursor.execute(f"UPDATE Pelatih SET Nama_Tim='{nama_tim}' WHERE id_pelatih = '{pelatih_id}'")
+                print("Pelatih inserted into the team")
+            else:
+                messages.error(request, 'Error: The coach already has the same specialization.')
 
     return redirect('team:get_team')
 

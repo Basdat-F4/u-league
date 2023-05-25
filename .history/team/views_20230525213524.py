@@ -235,20 +235,21 @@ def insert_pelatih(request):
                     pelatih_id, spesialisasi = pelatih_info
 
                     try:
-                        cursor.execute(f"UPDATE Pelatih SET Nama_Tim='{nama_tim}' WHERE id_pelatih = '{pelatih_id}'")
-                        print("Pelatih inserted into the team")
-                    except Exception as e:
-                        if "The coach already has the same specialization." in str(e):
-                            error_message = "An error occurred: The coach already has the same specialization."
-                        elif "The team already has two coaches." in str(e):
-                            error_message = "An error occurred: The team already has two coaches."
-                        else:
-                            error_message = "An error occurred while updating the coach."
-                        return redirect(reverse('team:reg_pelatih') + f'?error_message={error_message}')
+    cursor.execute(f"UPDATE Pelatih SET Nama_Tim='{nama_tim}' WHERE id_pelatih = '{pelatih_id}'")
+    print("Pelatih inserted into the team")
+except Exception as e:
+    if "The coach already has the same specialization." in str(e):
+        error_message = "An error occurred: The coach already has the same specialization."
+    elif "The team already has two coaches." in str(e):
+        error_message = "An error occurred: The team already has two coaches."
+    else:
+        error_message = "An error occurred while updating the coach."
+    return redirect(reverse('team:reg_pelatih') + f'?error_message={error_message}')
+
                 else:
                     error_message = "Selected coach is not available or already assigned to a team."
 
-    return redirect('team:get_team')
+    return render(request, 'pelatih.html', {'error_message': error_message})
 
 
 def set_captain(request, player_id):

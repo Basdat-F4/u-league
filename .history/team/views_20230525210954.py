@@ -141,9 +141,7 @@ def reg_pemain(request):
 
     return render(request, "pemain.html", context)
 
-def reg_pelatih(request):
-    error_message = request.GET.get('error_message')  # Get the error_message query parameter
-
+def reg_pelatih(request, error_message=None):
     with connection.cursor() as cursor:
         cursor.execute("SET SEARCH_PATH TO 'u-league'")
         cursor.execute("""
@@ -166,6 +164,7 @@ def reg_pelatih(request):
     }
 
     return render(request, 'pelatih.html', context)
+
 
 def insert_pemain(request):
     username = request.session["username"]
@@ -201,11 +200,6 @@ from django.db import IntegrityError
 from django.db import IntegrityError
 
 
-from django.shortcuts import redirect
-
-from django.urls import reverse
-from django.shortcuts import redirect
-
 def insert_pelatih(request):
     error_message = None  # Initialize the error message variable
     username = request.session["username"]
@@ -216,7 +210,7 @@ def insert_pelatih(request):
         selected_pelatih_nama = request.POST['pelatih']
 
         with connection.cursor() as cursor:
-            
+            try:
                 cursor.execute("SET SEARCH_PATH TO 'u-league'")
 
                 # Get the selected pelatih information from the database
@@ -233,23 +227,30 @@ def insert_pelatih(request):
 
                 if pelatih_info:
                     pelatih_id, spesialisasi = pelatih_info
-
                     try:
                         cursor.execute(f"UPDATE Pelatih SET Nama_Tim='{nama_tim}' WHERE id_pelatih = '{pelatih_id}'")
-                        print("Pelatih inserted into the team")
-                    except Exception as e:
-                        if "The coach already has the same specialization." in str(e):
-                            error_message = "An error occurred: The coach already has the same specialization."
-                        elif "The team already has two coaches." in str(e):
-                            error_message = "An error occurred: The team already has two coaches."
-                        else:
-                            error_message = "An error occurred while updating the coach."
-                        return redirect(reverse('team:reg_pelatih') + f'?error_message={error_message}')
+                    except IntegrityError as e:
+                        print("sini g")
+                if "The team already has two coaches" in str(e):
+                    error_message = "The team already has two coaches. Cannot add more coaches."
                 else:
+                    error_message = "An error occurred while updating the coach: " + str(e)
+
+                messages.error(request, error_message)  # Add error message to Django messages
+                    print("Pelatih inserted into the team")
+                else:
+                    print("sini g")
                     error_message = "Selected coach is not available or already assigned to a team."
+            except IntegrityError as e:
+                print("sini g")
+                if "The team already has two coaches" in str(e):
+                    error_message = "The team already has two coaches. Cannot add more coaches."
+                else:
+                    error_message = "An error occurred while updating the coach: " + str(e)
 
-    return redirect('team:get_team')
+                messages.error(request, error_message)  # Add error message to Django messages
 
+    return render(request, 'pelatih.html')
 
 def set_captain(request, player_id):
     with connection.cursor() as cursor:

@@ -160,4 +160,9 @@ body {
             <input type="submit" value="Submit" class="submit-button">
         </div>
     </form>
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+    {% endif %}
 </div>

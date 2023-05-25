@@ -248,7 +248,7 @@ def insert_pelatih(request):
                 else:
                     error_message = "Selected coach is not available or already assigned to a team."
 
-    return redirect('team:get_team')
+    return render(request, 'tim.html', {'error_message': error_message})
 
 
 def set_captain(request, player_id):

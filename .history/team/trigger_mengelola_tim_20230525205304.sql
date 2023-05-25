@@ -26,6 +26,8 @@ BEFORE INSERT OR UPDATE ON Pemain
 FOR EACH ROW
 EXECUTE FUNCTION captain_registration_trigger();
 
+SET SEARCH_PATH TO "u-league";
+
 CREATE OR REPLACE FUNCTION coach_insert_trigger()
 RETURNS TRIGGER AS $$
 DECLARE
