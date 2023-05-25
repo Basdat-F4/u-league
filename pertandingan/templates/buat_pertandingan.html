@@ -1,0 +1,80 @@
+{% extends 'panitiaBase.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="mt-4">Buat Pertandingan</h1>
+
+    <form action="/pertandingan/pendaftaran-pertandingan/{{stadium_tanggal}}" method="post">
+        {% csrf_token %}
+        <label>Pilih Wasit Utama:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama" name="wasit_utama">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+
+        <label>Pilih Wasit Pembantu:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama" name="wasit_pembantu_1">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+
+        <label>Pilih Wasit Pembantu:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama" name="wasit_pembantu_2">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+
+        <label>Pilih Wasit Cadangan:</label>
+        <select class="form-select" aria-label="Pilih Wasit Utama" name="wasit_cadangan">
+            {% for namawasit in wasit %}
+                <option value="{{namawasit.id}}">{{namawasit.nama_wasit}}</option>
+            {%endfor%}
+        </select>
+
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Tim 1</th>
+                <th scope="col">Tim 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="form-select" aria-label="pilih tim" name="tim_1">
+                            {% for data in tim %}
+                                <option value="{{data.nama_tim}}">{{data.nama_tim}}</option>
+                            {%endfor%}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" aria-label="pilih tim" name="tim_2">
+                            {% for data in tim %}
+                                <option value="{{data.nama_tim}}">{{data.nama_tim}}</option>
+                            {%endfor%}
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+            <input type="hidden" value="{{stadium_tanggal}}" name="stadium_tanggal">
+            <button type="submit" class="btn btn-primary" style="background-color: rgb(92, 15, 15);">Submit</button>
+
+    </form>
+
+    {% if messages %}
+    <ul class="text-sm">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+
+            </div>
+</body>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'panitiaBase.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">List Waktu {{nama}}</h1>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">List Waktu</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>11.00-13.00</td>
+                <td>Dipesan</td>
+            </tr>
+            <tr>
+                <td>07.00-09.00</td>
+                <td>
+                    <button type="button" class="btn btn-secondary btn-sm"  data-bs-toggle="modal" data-bs-target="#BuatPertandinganFormModal" style="background-color: rgb(92, 15, 15);"">Next</button>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+        <!-- <button type="button" class="btn btn-primary">Kembali</button> -->
+</div>
+</body>
+{% endblock content %}
