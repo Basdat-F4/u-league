@@ -1,37 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+{% extends 'manajerBase.html' %}
+{% block meta %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pesan Stadium</title>
-
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-  </head>
+{% endblock meta %}
+    
+{% block content %}
   <body>
     <div class="container">
       <h1 class="mt-4">Pesan Stadium</h1>
       <form class="mt-4">
         <div class="mb-3">
           <label for="isi-rapat" class="form-label">Stadium</label>
-          <select class="form-select" aria-label="Pilih stadium">
+          <select class="form-select" aria-label="Pilih stadium" name="id_stadium">
             <option selected>Pilih Stadium</option>
-            <option value="1">A</option>
-            <option value="2">B</option>
-            <option value="3">C</option>
-            <option value="4">D</option>
+            {% for stadium in list_stadium %}
+              <option value="{{stadium.id_stadium}}">{{stadium.nama}}</option>
+            {% endfor %}
           </select>
         </div>
         <div class="mb-3">
           <label for="isi-rapat" class="form-label">Tanggal</label>
-          <input type="date" class="form-control" />
+          <input type="date" class="form-control" name="date" />
         </div>
-        <a href="./jadwa-pinjam-form.html" class="btn btn-primary">Cari Jadwal</a>
+        <button type="submi" class="btn btn-primary">Cari Jadwal</button>
       </form>
     </div>
     <script
@@ -41,3 +38,5 @@
     ></script>
   </body>
 </html>
+
+{% endblock content %}

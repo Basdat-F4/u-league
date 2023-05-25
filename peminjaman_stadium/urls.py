@@ -5,4 +5,5 @@ app_name = 'peminjaman_stadium'
 
 urlpatterns = [
  path('list', get_list_peminjaman, name='get_list_peminjaman'),
+ path('create', create_peminjaman, name='create_peminjaman'),
 ]
