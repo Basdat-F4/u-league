@@ -6,7 +6,17 @@ import uuid
 
 # Create your views here.
 def homepage(request):
-    return render(request, "login-and-register.html")
+    print(is_authenticated(request))
+    if (is_authenticated(request)):
+        role = get_role(request.session["username"])
+        if (role == "manajer"):
+            return redirect("/dashboard-manajer")
+        elif (role == "penonton"):
+            return redirect("/dashboard-penonton")
+        elif (role == 'panitia'):
+            return redirect("/dashboard-panitia")
+    else:
+        return render(request, "login-and-register.html")
 
 def is_authenticated(request):
     try:
@@ -23,6 +33,15 @@ def get_session_data(request):
         return {"username": request.session["username"], "role": request.session["role"]}
     except:
         return {}
+    
+def get_dashboard(request):
+    role = get_role(request.session["username"])
+    if (role == "manajer"):
+        return redirect("/dashboard-manajer")
+    elif (role == "penonton"):
+        return redirect("/dashboard-penonton")
+    elif (role == 'panitia'):
+        return redirect("/dashboard-panitia")
     
 def get_role(username):
     res = query(f"SELECT * FROM manajer WHERE USERNAME='{username}'")
