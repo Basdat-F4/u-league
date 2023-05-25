@@ -104,8 +104,6 @@ def login(request):
             elif (role == 'panitia'):
                 return redirect("/dashboard-panitia")
 
-
-
 def login_view(request):
     if is_authenticated(request):
         return redirect("/")
