@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'pertandingan',
     'rapat',
     'team',
+    'peminjaman_stadium'
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'id-ID'
 
 TIME_ZONE = 'UTC'
 
