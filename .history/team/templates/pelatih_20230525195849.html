@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pelatih</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+	<style>
+body {
+	background-color: #6c0000;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 50px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.box {
+    width: 900px; 
+    height: 400px; 
+	background-color: #fff;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	padding: 20px;
+	margin: 20px;
+	min-width: center; 
+    
+}
+
+.box h2 {
+	font-weight: bold; 
+	margin-top: 20;
+    font-size: 30px;
+}
+
+.box h3 {
+	margin-top: 0;
+	margin-bottom: 0;
+    font-size: 20px;
+}
+.box p{
+    margin-top: 0;
+	margin-bottom: 0;
+    font-size: 15px;
+    font-weight: lighter;
+}
+.box2 {
+    width: 250px; 
+    height: 300px; 
+	background-color: #6c0000;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	padding: 20px;
+	margin: 20px;
+	min-width: center; 
+    position: relative;
+    top: -40px;
+    left: -30px;
+    
+}
+.submit-button {
+    background-color: #6c0000; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .my-select {
+  width: 800px; /* set the desired width */
+  height: 40px; /* set the desired height */
+  font-size: 20;
+  margin-bottom: 30px;
+}
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+	</style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-image: linear-gradient(-45deg, rgb(2, 4, 2), rgb(92, 15, 15));">
+        <div class="container-fluid">
+          <a class="navbar-brand" style="font-weight: bold; color: white;" href="#">U-League</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" style="color: white;" href="#">Mengelola Tim</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: white;" href="#">Peminjaman Stadium</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: white;" href="#">List Pertandingan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: white;" href="#">History Rapat</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <button type="button" class="btn" style="color: white" data-bs-toggle="modal" data-bs-target="#newTaskModal">Dashboard</button>
+              <button class="btn btn-primary" style="background-color: rgb(255, 255, 255); border: 0px; padding: 10px 24px; font-size: 16px; border-radius: 15px; color: white; filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.098));"><a class="link_below" style="text-decoration: none; color: rgb(0, 0, 0);" href="#">Logout</a></button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+	<div class="container">
+		<div class="box">
+			<h2 style="margin-bottom: 50px">DAFTAR PELATIH</h2>
+            <style>
+                h2{
+                    text-align: center;
+                }
+            </style>
+        <label for="name" style="display: block; margin: 0 auto; font-weight: bold; font-size: 20px; text-align: center; margin-bottom: 10px;">Pelatih yang Mau Didaftarkan</label>
+        <div class ="dropdown-container">
+          <form action="{% url 'team:insert_pelatih' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="pelatih">Pelatih:</label>
+                <select class="my-select" name="pelatih">
+                    {% for pelatih_option in pelatih_options %}
+                        <option value="{{ pelatih_option.nama_pelatih }}">{{ pelatih_option.nama_pelatih }} - {{ pelatih_option.spesialisasi }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <input type="submit" value="Submit" class="submit-button">
+            </div>
+        </form>
+        
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+                
+          </div>

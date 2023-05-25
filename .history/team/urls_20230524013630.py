@@ -1,0 +1,11 @@
+from django.urls import path
+from team.views import tes_daftar, tes_pelatih, tes_pemain, get_team, get_pemain_names
+
+app_name = 'team'
+
+urlpatterns = [
+    path('', get_team, name='tes_tim'),
+    path('pelatih', tes_pelatih, name='tes_pelatih'),
+    path('pemain', get_pemain_names, name='get_pemain_names'),
+    path('daftar', tes_daftar, name='tes_daftar'),
+]
